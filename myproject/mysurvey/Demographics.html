@@ -1,9 +1,59 @@
+{% load otree static %}
 {{ block title }}
-    Section 1: Demographic Information
+Section 1: Demographic Information
 {{ endblock }}
+
 {{ block content }}
 
-    {{ formfields }}
-    {{ next_button }}
+<!-- Q1–Q4: show label + options -->
+{{ formfield 'age_group' }}
+{{ formfield 'gender' }}
+{{ formfield 'income' }}
+{{ formfield 'education' }}
 
+<!-- Q5: Location with images -->
+<div class="form-group">
+    <p><b>Q5: Where do you live?</b></p>
+
+    <div class="img-choice-grid">
+
+        <label class="img-choice">
+            <input type="radio" name="location" value="Urban" required>
+            <img src="{% static 'img/urban.jpg' %}" alt="Urban">
+            <div class="caption">Urban</div>
+        </label>
+
+        <label class="img-choice">
+            <input type="radio" name="location" value="Suburban" required>
+            <img src="{% static 'img/suburban.jpg' %}" alt="Suburban">
+            <div class="caption">Suburban</div>
+        </label>
+
+        <label class="img-choice">
+            <input type="radio" name="location" value="Rural" required>
+            <img src="{% static 'img/rural.jpg' %}" alt="Rural">
+            <div class="caption">Rural</div>
+        </label>
+
+    </div>
+
+     {% if form.location.errors %}
+        {{ form.location.errors }}
+    {% endif %}
+</div>
+
+{{ next_button }}
+
+<style>
+    .img-choice-grid { display:flex; gap:24px; margin-top:12px; flex-wrap:wrap; }
+    .img-choice { cursor:pointer; text-align:center; }
+    .img-choice input { display:none; }
+    .img-choice img {
+        width:180px; height:120px; object-fit:cover;
+        border:3px solid transparent; border-radius:8px;
+        transition:border-color .2s ease;
+    }
+    .img-choice input:checked + img { border-color:#0d6efd; }
+    .caption { margin-top:6px; font-weight:500; }
+</style>
 {{ endblock }}

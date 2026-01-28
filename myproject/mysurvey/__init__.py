@@ -52,8 +52,7 @@ class Player(BasePlayer):
     # Q5: Location
     location = models.StringField(
         label='Q5: Where do you live?',
-        choices=['Urban', 'Suburban', 'Rural'],
-        widget=widgets.RadioSelect
+        choices=['Urban', 'Suburban', 'Rural']
     )
 
 # PAGES
