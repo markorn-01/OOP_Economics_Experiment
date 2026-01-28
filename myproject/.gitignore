@@ -3,3 +3,10 @@
 
 # Django / oTree database
 db.sqlite3
+
+# IDE
+.idea/
+
+# Python cache
+__pycache__/
+*.pyc
