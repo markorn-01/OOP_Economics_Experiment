@@ -1,0 +1,5 @@
+# macOS
+.DS_Store
+
+# Django / oTree database
+db.sqlite3
