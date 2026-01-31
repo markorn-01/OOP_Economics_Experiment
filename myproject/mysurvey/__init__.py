@@ -21,16 +21,39 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    # Get information of each player
-    name = models.StringField(label='Your Name: ')
-    age = models.IntegerField(label='Your Age: ', min=0, max=100)
-    gender = models.StringField(label='Your Gender: ', choices=['Male', 'Female', 'Other', 'Prefer not to tell'])
-    coin = models.BooleanField()
-    prediction = models.BooleanField(label='Your Prediction: ',
-                                     choices=[(True, 'Heads'),
-                                              (False, 'Tails')],
-                                     widget=widgets.RadioSelect)
+    # Q1: Age group
+    age_group = models.StringField(
+        label='Q1: What is your age group?',
+        choices=['18–24', '25–40', '41–56', '57–65', '65+'],
+        widget=widgets.RadioSelect
+    )
 
+    # Q2: Gender
+    gender = models.StringField(
+        label='Q2: What is your gender?',
+        choices=['Male', 'Female', 'Non-binary/Other', 'Prefer not to say'],
+        widget=widgets.RadioSelect
+    )
+
+    # Q3: Income (categorical ranges are better than integer)
+    income = models.StringField(
+        label='Q3: What is your annual household income?',
+        choices=['<$30,000', '$30,000–$75,000', '>$75,000', 'Prefer not to say'],
+        widget=widgets.RadioSelect
+    )
+
+    # Q4: Education
+    education = models.StringField(
+        label='Q4: What is your highest level of education?',
+        choices=['High school or less', 'Some college', "Bachelor’s degree", 'Postgraduate', 'Other'],
+        widget=widgets.RadioSelect
+    )
+
+    # Q5: Location
+    location = models.StringField(
+        label='Q5: Where do you live?',
+        choices=['Urban', 'Suburban', 'Rural']
+    )
 
 # PAGES
 class Introduction(Page):
@@ -38,23 +61,10 @@ class Introduction(Page):
 
 class Demographics(Page):
     form_model = 'player'
-    form_fields = ['name', 'age', 'gender']
-
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        import random
-        player.coin = random.choice([True, False])
-
-class Coin(Page):
-    form_model = 'player'
-    form_fields = ['prediction']
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        if player.prediction == player.coin:
-            player.payoff += 1
+    form_fields = ['age_group', 'gender', 'income', 'education', 'location']
 
 class Results(Page):
     pass
 
 
-page_sequence = [Introduction, Demographics, Coin, Results]
+page_sequence = [Introduction, Demographics]
