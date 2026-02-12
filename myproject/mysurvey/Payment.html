@@ -1,0 +1,81 @@
+{% load otree static %}
+
+{{ block title }}
+Section 2: Digital Payment Method Usage in general and Buy Now Pay Later Options
+{{ endblock }}
+
+{{ block content }}
+
+<p><b>Q6: Which digital payment methods have you used in the past 12 months? (Select all that apply)</b></p>
+
+<!-- THIS is what oTree will save into player.payment_methods -->
+<input type="hidden" name="payment_methods" id="payment_methods_hidden">
+
+<div class="img-choice-grid">
+
+    <label class="img-choice">
+        <input type="checkbox" class="pm" value="Credit cards">
+        <img src="{% static 'img/credit.jpg' %}" alt="Credit cards">
+        <div class="caption">Credit cards</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="checkbox" class="pm" value="Debit cards">
+        <img src="{% static 'img/debit.jpg' %}" alt="Debit cards">
+        <div class="caption">Debit cards</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="checkbox" class="pm" value="Digital wallets (e.g., PayPal, Apple Pay)">
+        <img src="{% static 'img/wallet.png' %}" alt="Digital wallets">
+        <div class="caption">Digital wallets <small>(e.g., PayPal, Apple Pay)</small></div>
+    </label>
+
+    <label class="img-choice">
+        <input type="checkbox" class="pm" value="BNPL (e.g., Klarna, PayPal Pay in 4)">
+        <img src="{% static 'img/bnpl.jpg' %}" alt="BNPL">
+        <div class="caption">BNPL <small>(e.g., Klarna, PayPal Pay in 4)</small></div>
+    </label>
+
+    <label class="img-choice">
+        <input type="checkbox" class="pm" value="Cryptocurrency">
+        <img src="{% static 'img/crypto.jpg' %}" alt="Cryptocurrency">
+        <div class="caption">Cryptocurrency</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="checkbox" class="pm" value="Other">
+        <img src="{% static 'img/other.png' %}" alt="Other">
+        <div class="caption">Other</div>
+    </label>
+
+</div>
+
+{{ next_button }}
+
+<script>
+    function syncPaymentMethods() {
+    const vals = Array.from(document.querySelectorAll('input.pm:checked')).map(x => x.value);
+    document.getElementById('payment_methods_hidden').value = vals.join(', ');
+    }
+
+    document.querySelectorAll('input.pm').forEach(cb => cb.addEventListener('change', syncPaymentMethods));
+    syncPaymentMethods();
+</script>
+
+<style>
+    .img-choice-grid { display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; }
+    .img-choice { cursor:pointer; text-align:center; }
+    .img-choice input { display:none; }
+    .img-choice img{
+    width:170px; height:110px; object-fit:cover;
+    border:3px solid transparent; border-radius:10px;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .img-choice:hover img{ transform: scale(1.03); box-shadow: 0 6px 14px rgba(0,0,0,.15); }
+    .img-choice input:checked + img{ border-color:#0d6efd; }
+    .caption{ margin-top:6px; font-weight:500; }
+    .caption small{ font-weight:400; color:#666; }
+</style>
+
+{{ endblock }}
