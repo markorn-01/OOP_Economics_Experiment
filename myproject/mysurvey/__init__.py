@@ -1,3 +1,5 @@
+from symtable import Class
+
 from otree.api import *
 
 
@@ -66,5 +68,7 @@ class Demographics(Page):
 class Results(Page):
     pass
 
+class Test(Page):
+    pass
 
-page_sequence = [Introduction, Demographics]
+page_sequence = [Introduction, Demographics, Test]
