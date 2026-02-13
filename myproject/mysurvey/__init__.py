@@ -1,7 +1,7 @@
 from symtable import Class
 
+from charset_normalizer import models
 from otree.api import *
-
 
 doc = """
 Your app description
@@ -23,6 +23,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    # Section 1:
     # Q1: Age group
     age_group = models.StringField(
         label='Q1: What is your age group?',
@@ -57,6 +58,26 @@ class Player(BasePlayer):
         choices=['Urban', 'Suburban', 'Rural']
     )
 
+    # Section 2:
+    # Q6: Payment methods
+    payment_methods = models.LongStringField(
+        label='Q6: Which digital payment methods have you used in the past 12 months? (Select all that apply)',
+        blank=True)
+
+    # Q7: Factors
+    factor_ranking = models.LongStringField(
+        label='Q7: What factors influence your choice of payment method at checkout? (Drag options to rank 1–5)',
+        blank=False
+    )
+
+    # Q8: Frequency
+    bnpl_frequency = models.StringField(
+        label='Q8: How often do you use BNPL services (e.g., PayPal Pay in 4, Affirm, Klarna)?',
+        choices=['Never', 'Rarely', 'Sometimes', 'Often', 'Always'],
+        widget=widgets.RadioSelectHorizontal
+    )
+
+
 # PAGES
 class Introduction(Page):
     pass
@@ -65,10 +86,23 @@ class Demographics(Page):
     form_model = 'player'
     form_fields = ['age_group', 'gender', 'income', 'education', 'location']
 
+class Payment(Page):
+    form_model = 'player'
+    form_fields = ['payment_methods',
+                   'factor_ranking',
+                   'bnpl_frequency']
+                   # 'provider',
+                   # 'service_reason',
+                   # 'is_abandoned',
+                   # 'missed_bnpl',
+                   # 'product_type',
+                   # 'statement_rate']
+
+
 class Results(Page):
     pass
 
 class Test(Page):
     pass
 
-page_sequence = [Introduction, Demographics, Test]
+page_sequence = [Introduction, Demographics, Payment, Test]
