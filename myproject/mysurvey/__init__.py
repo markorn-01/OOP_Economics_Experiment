@@ -59,7 +59,16 @@ class Player(BasePlayer):
     )
 
     # Section 2:
-    payment_methods = models.LongStringField(blank=True)
+    # Q6: Payment methods
+    payment_methods = models.LongStringField(
+        label='Q6: Which digital payment methods have you used in the past 12 months? (Select all that apply)',
+        blank=True)
+
+    #Q7: Factors
+    factor_ranking = models.LongStringField(
+        label='Q7: What factors influence your choice of payment method at checkout? (Drag options to rank 1–5)',
+        blank=False
+    )
 
 # PAGES
 class Introduction(Page):
@@ -71,8 +80,8 @@ class Demographics(Page):
 
 class Payment(Page):
     form_model = 'player'
-    form_fields = ['payment_methods']
-                   # 'factors',
+    form_fields = ['payment_methods',
+                   'factor_ranking']
                    # 'frequency',
                    # 'provider',
                    # 'service_reason',
@@ -81,10 +90,11 @@ class Payment(Page):
                    # 'product_type',
                    # 'statement_rate']
 
+
 class Results(Page):
     pass
 
 class Test(Page):
     pass
 
-page_sequence = [Introduction, Demographics, Payment,  Test]
+page_sequence = [Introduction, Demographics, Payment, Test]

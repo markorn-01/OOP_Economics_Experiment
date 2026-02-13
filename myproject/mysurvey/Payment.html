@@ -1,12 +1,15 @@
 {% load otree static %}
 
 {{ block title }}
-Section 2: Digital Payment Method Usage in general and Buy Now Pay Later Options
+<b>Section 2: Digital Payment Method Usage in general and Buy Now Pay Later Options</b>
 {{ endblock }}
 
 {{ block content }}
 
-<p><b>Q6: Which digital payment methods have you used in the past 12 months? (Select all that apply)</b></p>
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q6 ===================== -->
+<p><b>{{ form.payment_methods.label }}</b></p>
 
 <!-- THIS is what oTree will save into player.payment_methods -->
 <input type="hidden" name="payment_methods" id="payment_methods_hidden">
@@ -14,25 +17,25 @@ Section 2: Digital Payment Method Usage in general and Buy Now Pay Later Options
 <div class="img-choice-grid">
 
     <label class="img-choice">
-        <input type="checkbox" class="pm" value="Credit cards">
+        <input type="checkbox" class="pm" value="Credit_cards">
         <img src="{% static 'img/credit.jpg' %}" alt="Credit cards">
         <div class="caption">Credit cards</div>
     </label>
 
     <label class="img-choice">
-        <input type="checkbox" class="pm" value="Debit cards">
+        <input type="checkbox" class="pm" value="Debit_cards">
         <img src="{% static 'img/debit.jpg' %}" alt="Debit cards">
         <div class="caption">Debit cards</div>
     </label>
 
     <label class="img-choice">
-        <input type="checkbox" class="pm" value="Digital wallets (e.g., PayPal, Apple Pay)">
+        <input type="checkbox" class="pm" value="Digital_wallets">
         <img src="{% static 'img/wallet.png' %}" alt="Digital wallets">
         <div class="caption">Digital wallets <small>(e.g., PayPal, Apple Pay)</small></div>
     </label>
 
     <label class="img-choice">
-        <input type="checkbox" class="pm" value="BNPL (e.g., Klarna, PayPal Pay in 4)">
+        <input type="checkbox" class="pm" value="BNPL">
         <img src="{% static 'img/bnpl.jpg' %}" alt="BNPL">
         <div class="caption">BNPL <small>(e.g., Klarna, PayPal Pay in 4)</small></div>
     </label>
@@ -51,9 +54,30 @@ Section 2: Digital Payment Method Usage in general and Buy Now Pay Later Options
 
 </div>
 
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q7 ===================== -->
+<p><b>{{form.factor_ranking.label}}</b></p>
+<p>Drag to rank (1 = most important, 5 = least important).</p>
+
+<!-- Saved into player.q7_ranking -->
+<input type="hidden" name="factor_ranking" id="factor_ranking">
+
+<ol id="rankList" class="rank-list">
+    <li class="rank-item" data-value="Convenience"><span class="num">1</span> Convenience</li>
+    <li class="rank-item" data-value="Security"><span class="num">2</span> Security</li>
+    <li class="rank-item" data-value="Trust_in_provider"><span class="num">3</span> Trust in provider</li>
+    <li class="rank-item" data-value="Cost"><span class="num">4</span> Cost (e.g., no interest)</li>
+    <li class="rank-item" data-value="Speed"><span class="num">5</span> Speed</li>
+</ol>
+
 {{ next_button }}
 
+<!-- SortableJS for drag ranking -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
 <script>
+    // ---------- Q6: collect checked payment methods ----------
     function syncPaymentMethods() {
     const vals = Array.from(document.querySelectorAll('input.pm:checked')).map(x => x.value);
     document.getElementById('payment_methods_hidden').value = vals.join(', ');
@@ -61,9 +85,28 @@ Section 2: Digital Payment Method Usage in general and Buy Now Pay Later Options
 
     document.querySelectorAll('input.pm').forEach(cb => cb.addEventListener('change', syncPaymentMethods));
     syncPaymentMethods();
+
+    // ---------- Q7: drag-and-drop ranking ----------
+    const list = document.getElementById('rankList');
+    const hiddenRank = document.getElementById('factor_ranking');
+
+    function updateNumbersAndHidden() {
+        const items = Array.from(list.querySelectorAll('.rank-item'));
+        items.forEach((item, i) => item.querySelector('.num').textContent = (i + 1));
+        const order = items.map(item => item.dataset.value);
+        hiddenRank.value = order.join(' | ');
+    }
+
+    new Sortable(list, {
+        animation: 150,
+        onSort: updateNumbersAndHidden
+    });
+
+    updateNumbersAndHidden();
 </script>
 
 <style>
+    /* Q6 */
     .img-choice-grid { display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; }
     .img-choice { cursor:pointer; text-align:center; }
     .img-choice input { display:none; }
@@ -76,6 +119,32 @@ Section 2: Digital Payment Method Usage in general and Buy Now Pay Later Options
     .img-choice input:checked + img{ border-color:#0d6efd; }
     .caption{ margin-top:6px; font-weight:500; }
     .caption small{ font-weight:400; color:#666; }
+
+    /* Q7 */
+    .rank-list{
+        list-style:none;
+        padding:0;
+        margin-top:14px;
+        max-width:560px;
+    }
+    .rank-item{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        padding:12px 14px;
+        margin:10px 0;
+        background:#f3f4f6;
+        border-radius:10px;
+        cursor:grab;
+        user-select:none;
+    }
+    .rank-item:active{ cursor:grabbing; }
+    .num{
+        width:28px; height:28px; border-radius:999px;
+        display:flex; align-items:center; justify-content:center;
+        background:#111827; color:#fff; font-weight:700;
+        flex:0 0 28px;
+    }
 </style>
 
 {{ endblock }}

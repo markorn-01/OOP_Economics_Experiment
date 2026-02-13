@@ -1,19 +1,44 @@
 {% load otree static %}
 {{ block title }}
-Section 1: Demographic Information
+<b>Section 1: Demographic Information</b>
 {{ endblock }}
 
 {{ block content }}
 
+<hr style="margin: 28px 0;">
+
 <!-- Q1–Q4: show label + options -->
-{{ formfield 'age_group' }}
-{{ formfield 'gender' }}
-{{ formfield 'income' }}
-{{ formfield 'education' }}
+<div class="form-group">
+    <p><b>{{ form.age_group.label }}</b></p>
+    {{ form.age_group }}
+</div>
+
+<hr style="margin: 28px 0;">
+
+<div class="form-group">
+    <p><b>{{ form.gender.label }}</b></p>
+    {{ form.gender }}
+</div>
+
+<hr style="margin: 28px 0;">
+
+<div class="form-group">
+    <p><b>{{ form.income.label }}</b></p>
+    {{ form.income }}
+</div>
+
+<hr style="margin: 28px 0;">
+
+<div class="form-group">
+    <p><b>{{ form.education.label }}</b></p>
+    {{ form.education }}
+</div>
+
+<hr style="margin: 28px 0;">
 
 <!-- Q5: Location with images -->
 <div class="form-group">
-    <p>Q5: Where do you live?</p>
+    <p><b>{{form.location.label}}</b></p>
 
     <div class="img-choice-grid">
 
