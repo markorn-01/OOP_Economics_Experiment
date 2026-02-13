@@ -71,6 +71,21 @@
     <li class="rank-item" data-value="Speed"><span class="num">5</span> Speed</li>
 </ol>
 
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q8 ===================== -->
+
+<div class="question-block">
+    <p class="question-title">
+        <b>{{ form.bnpl_frequency.label }}</b>
+    </p>
+
+    <div class="likert-horizontal">
+        {{ form.bnpl_frequency }}
+    </div>
+</div>
+
+
 {{ next_button }}
 
 <!-- SortableJS for drag ranking -->
@@ -145,6 +160,15 @@
         background:#111827; color:#fff; font-weight:700;
         flex:0 0 28px;
     }
+
+    /* Q8 */
+    .question-block {
+        margin-top: 30px;
+        padding: 18px 20px;
+        background: #f9fafb;
+        border-radius: 12px;
+    }
+
 </style>
 
 {{ endblock }}

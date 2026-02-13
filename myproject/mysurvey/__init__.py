@@ -64,11 +64,19 @@ class Player(BasePlayer):
         label='Q6: Which digital payment methods have you used in the past 12 months? (Select all that apply)',
         blank=True)
 
-    #Q7: Factors
+    # Q7: Factors
     factor_ranking = models.LongStringField(
         label='Q7: What factors influence your choice of payment method at checkout? (Drag options to rank 1–5)',
         blank=False
     )
+
+    # Q8: Frequency
+    bnpl_frequency = models.StringField(
+        label='Q8: How often do you use BNPL services (e.g., PayPal Pay in 4, Affirm, Klarna)?',
+        choices=['Never', 'Rarely', 'Sometimes', 'Often', 'Always'],
+        widget=widgets.RadioSelectHorizontal
+    )
+
 
 # PAGES
 class Introduction(Page):
@@ -81,8 +89,8 @@ class Demographics(Page):
 class Payment(Page):
     form_model = 'player'
     form_fields = ['payment_methods',
-                   'factor_ranking']
-                   # 'frequency',
+                   'factor_ranking',
+                   'bnpl_frequency']
                    # 'provider',
                    # 'service_reason',
                    # 'is_abandoned',
