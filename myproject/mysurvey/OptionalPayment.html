@@ -1,0 +1,18 @@
+{% load otree static %}
+
+{{ block title }}
+{{ endblock }}
+
+{{ block content }}
+
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q6 ===================== -->
+<div class="form-group">
+    <p><b>{{ form.provider.label }}</b></p>
+    {{ form.provider }}
+</div>
+
+{{ next_button }}
+
+{{ endblock }}

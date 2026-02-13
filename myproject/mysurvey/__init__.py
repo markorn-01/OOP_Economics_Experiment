@@ -77,6 +77,13 @@ class Player(BasePlayer):
         widget=widgets.RadioSelectHorizontal
     )
 
+    # Optional
+    # Q8.1:
+    provider = models.StringField(
+        label='Q8.1: Which BNPL provider do you use most frequently?',
+        choices=['PayPal Pay in 4', 'Affirm', 'Klarna', 'After pay', 'Apple Pay Later', 'Other', 'None'],
+        widget=widgets.RadioSelect
+    )
 
 # PAGES
 class Introduction(Page):
@@ -91,12 +98,19 @@ class Payment(Page):
     form_fields = ['payment_methods',
                    'factor_ranking',
                    'bnpl_frequency']
-                   # 'provider',
+
+class OptionalPayment(Page):
+    form_model = 'player'
+    form_fields = ['provider']
                    # 'service_reason',
                    # 'is_abandoned',
                    # 'missed_bnpl',
                    # 'product_type',
                    # 'statement_rate']
+
+    @staticmethod
+    def is_displayed(player):
+        return player.bnpl_frequency != 'Never'
 
 
 class Results(Page):
@@ -105,4 +119,4 @@ class Results(Page):
 class Test(Page):
     pass
 
-page_sequence = [Introduction, Demographics, Payment, Test]
+page_sequence = [Introduction, Demographics, Payment, OptionalPayment, Test]
