@@ -1,5 +1,3 @@
-from symtable import Class
-
 from charset_normalizer import models
 from otree.api import *
 
@@ -21,6 +19,9 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     pass
 
+# Q11: Intertemporal choice rows
+def make_time_choice():
+    return models.IntegerField(choices=[[1, ""], [2, ""]], blank=False)
 
 class Player(BasePlayer):
     # Section 1:
@@ -93,6 +94,26 @@ class Player(BasePlayer):
         max=7,
     )
 
+    # Q11: Week preference
+    q111 = make_time_choice()
+    q112 = make_time_choice()
+    q113 = make_time_choice()
+    q114 = make_time_choice()
+    q115 = make_time_choice()
+    q116 = make_time_choice()
+    q117 = make_time_choice()
+    q118 = make_time_choice()
+
+    # Q12: Month preference
+    q121 = make_time_choice()
+    q122 = make_time_choice()
+    q123 = make_time_choice()
+    q124 = make_time_choice()
+    q125 = make_time_choice()
+    q126 = make_time_choice()
+    q127 = make_time_choice()
+    q128 = make_time_choice()
+
 # PAGES
 class Introduction(Page):
     pass
@@ -106,20 +127,54 @@ class Payment(Page):
     form_fields = ['payment_methods',
                    'factor_ranking',
                    'bnpl_frequency']
-                   # 'provider',
-                   # 'service_reason',
-                   # 'is_abandoned',
-                   # 'missed_bnpl',
-                   # 'product_type',
-                   # 'statement_rate']
 
 class Preference(Page):
     form_model = 'player'
     form_fields = ['purchase_pref',
-                   'scale_pref']
-                   # 'week_pref',
-                   # 'month_pref',
+                   'scale_pref',
+                   'q111',
+                   'q112',
+                   'q113',
+                   'q114',
+                   'q115',
+                   'q116',
+                   'q117',
+                   'q118',
+                   'q121',
+                   'q122',
+                   'q123',
+                   'q124',
+                   'q125',
+                   'q126',
+                   'q127',
+                   'q128']
                    # 'bnpl_influence']
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        rows11 = [
+            ('q111', 1000, 1002),
+            ('q112', 1000, 1004),
+            ('q113', 1000, 1006),
+            ('q114', 1000, 1010),
+            ('q115', 1000, 1015),
+            ('q116', 1000, 1022),
+            ('q117', 1000, 1030),
+            ('q118', 1000, 1040),
+        ]
+
+        rows12 = [
+            ('q121', 1000, 1007),
+            ('q122', 1000, 1014),
+            ('q123', 1000, 1021),
+            ('q124', 1000, 1035),
+            ('q125', 1000, 1053),
+            ('q126', 1000, 1079),
+            ('q127', 1000, 1109),
+            ('q128', 1000, 1147),
+        ]
+
+        return dict(q11_rows=rows11, q12_rows=rows12)
 
 
 class Results(Page):

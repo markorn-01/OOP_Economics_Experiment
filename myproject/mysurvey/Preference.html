@@ -77,6 +77,91 @@
     syncQ10();
 </script>
 
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q11 ===================== -->
+<p class="q11-title"><b>Q11: Would you prefer to pay €1000 today or a higher amount in 4–6 weeks?</b></p>
+
+<table class="q11">
+    <thead>
+        <tr>
+            <th class="amt"></th>
+            <th class="hdr">paying<br>today</th>
+            <th class="hdr">paying<br>in 4–6<br>weeks</th>
+            <th class="amt"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{ for fname, amt, later_amt in q11_rows }}
+        <tr>
+            <td class="amt">€{{ amt }}</td>
+
+            <td class="pick">
+                <input class="q11-radio" type="radio" name="{{ fname }}" value="1" required>
+            </td>
+
+            <td class="pick">
+                <input class="q11-radio" type="radio" name="{{ fname }}" value="2">
+            </td>
+
+            <td class="amt">€{{ later_amt }}</td>
+        </tr>
+        {{ endfor }}
+    </tbody>
+</table>
+
+{{ formfield_errors 'q111' }}
+{{ formfield_errors 'q112' }}
+{{ formfield_errors 'q113' }}
+{{ formfield_errors 'q114' }}
+{{ formfield_errors 'q115' }}
+{{ formfield_errors 'q116' }}
+{{ formfield_errors 'q117' }}
+{{ formfield_errors 'q118' }}
+
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q12 ===================== -->
+<p class="q11-title"><b>Q12: Would you prefer to pay €1000 today or a higher amount in 3–6 months?</b></p>
+
+<table class="q11">
+    <thead>
+        <tr>
+            <th class="amt"></th>
+            <th class="hdr">paying<br>today</th>
+            <th class="hdr">paying<br>in 3-6<br>months</th>
+            <th class="amt"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{ for fname, amt, later_amt in q12_rows }}
+        <tr>
+            <td class="amt">€{{ amt }}</td>
+
+            <td class="pick">
+                <input class="q11-radio" type="radio" name="{{ fname }}" value="1" required>
+            </td>
+
+            <td class="pick">
+                <input class="q11-radio" type="radio" name="{{ fname }}" value="2">
+            </td>
+
+            <td class="amt">€{{ later_amt }}</td>
+        </tr>
+        {{ endfor }}
+    </tbody>
+</table>
+
+{{ formfield_errors 'q121' }}
+{{ formfield_errors 'q122' }}
+{{ formfield_errors 'q123' }}
+{{ formfield_errors 'q124' }}
+{{ formfield_errors 'q125' }}
+{{ formfield_errors 'q126' }}
+{{ formfield_errors 'q127' }}
+{{ formfield_errors 'q128' }}
 {{ next_button }}
 
 <style>
@@ -152,6 +237,44 @@
         font-size: 14px;
         color:#333;
     }
+
+    .q11-title{
+      margin-top: 18px;
+      margin-bottom: 18px;
+      font-size: 18px;
+    }
+
+    table.q11{
+      margin: 0 auto;
+      border-collapse: collapse;
+      font-size: 16px;
+    }
+
+    table.q11 th, table.q11 td{
+      padding: 10px 24px;
+      text-align: center;
+      border: none;
+    }
+
+    table.q11 thead th.hdr{
+      font-weight: 500;
+      color: #444;
+    }
+
+    table.q11 td.amt, table.q11 th.amt{
+      width: 140px;
+      color: #444;
+    }
+
+    table.q11 td.pick{
+      width: 80px;
+    }
+
+    .q11-radio{
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+
 </style>
 
 {{ endblock }}
