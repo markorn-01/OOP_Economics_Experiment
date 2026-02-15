@@ -77,6 +77,21 @@ class Player(BasePlayer):
         widget=widgets.RadioSelectHorizontal
     )
 
+    # Section 3:
+    # Q9: Purchase preference
+    purchase_pref = models.StringField(
+        label='Q9: When making purchases, do you prefer to:',
+        choices=[ ('pay_now', 'Pay now to avoid future debt'),
+                    ('spread_payment', 'Spread payments over time')]
+    )
+
+    # Q10: slider 1–7
+    scale_pref = models.IntegerField(
+        label='Q10: On a scale of 1–7, '
+              'how would you rate your preference for spending now vs. saving for the future?',
+        min=1,
+        max=7,
+    )
 
 # PAGES
 class Introduction(Page):
@@ -98,6 +113,14 @@ class Payment(Page):
                    # 'product_type',
                    # 'statement_rate']
 
+class Preference(Page):
+    form_model = 'player'
+    form_fields = ['purchase_pref',
+                   'scale_pref']
+                   # 'week_pref',
+                   # 'month_pref',
+                   # 'bnpl_influence']
+
 
 class Results(Page):
     pass
@@ -105,4 +128,4 @@ class Results(Page):
 class Test(Page):
     pass
 
-page_sequence = [Introduction, Demographics, Payment, Test]
+page_sequence = [Introduction, Demographics, Payment, Preference, Test]
