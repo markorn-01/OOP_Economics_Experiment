@@ -1,18 +1,339 @@
 {% load otree static %}
 
 {{ block title }}
+<b>Section 2 (continued): Buy Now Pay Later Options</b>
 {{ endblock }}
 
 {{ block content }}
 
 <hr style="margin: 28px 0;">
 
-<!-- ===================== Q6 ===================== -->
-<div class="form-group">
-    <p><b>{{ form.provider.label }}</b></p>
-    {{ form.provider }}
+<!-- ===================== Q8.1 ===================== -->
+<p><b>{{ form.provider.label }}</b></p>
+
+<!-- oTree will save into player.provider -->
+<input type="hidden" name="provider" id="provider_hidden" value="{{ player.field_maybe_none('provider') }}">
+
+<div class="img-choice-grid">
+
+    <label class="img-choice">
+        <input type="radio" class="prov" name="prov_ui" value="PayPal Pay in 4">
+        <img src="{% static 'img/paypal.png' %}" alt="PayPal Pay in 4">
+        <div class="caption">PayPal Pay in 4</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="radio" class="prov" name="prov_ui" value="Affirm">
+        <img src="{% static 'img/affirm.png' %}" alt="Affirm">
+        <div class="caption">Affirm</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="radio" class="prov" name="prov_ui" value="Klarna">
+        <img src="{% static 'img/klarna.png' %}" alt="Klarna">
+        <div class="caption">Klarna</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="radio" class="prov" name="prov_ui" value="After pay">
+        <img src="{% static 'img/afterpay.png' %}" alt="After pay">
+        <div class="caption">After pay</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="radio" class="prov" name="prov_ui" value="Apple Pay Later">
+        <img src="{% static 'img/applepaylater.png' %}" alt="Apple Pay Later">
+        <div class="caption">Apple Pay Later</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="radio" class="prov" name="prov_ui" value="Other">
+        <img src="{% static 'img/other.png' %}" alt="Other">
+        <div class="caption">Other</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="radio" class="prov" name="prov_ui" value="None">
+        <img src="{% static 'img/none.png' %}" alt="None">
+        <div class="caption">None</div>
+    </label>
+
+</div>
+
+<div id="provider-other-box" style="display:none; margin-top:12px; max-width:560px;">
+    <label for="id_provider_other">Please specify</label>
+    {{ form.provider_other }}
+</div>
+
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q8.2 ===================== -->
+<div class="question-block">
+    <p class="question-title">
+        <b>{{ form.service_reason.label }}</b>
+    </p>
+
+    <!-- oTree will save into player.service_reason -->
+    <input type="hidden" name="service_reason" id="service_reason_hidden"
+           value="{{ player.field_maybe_none('service_reason') }}">
+
+    <ul class="reason-list">
+        <li class="reason-item">
+            <label class="row-click">
+                <input type="checkbox" class="sr" value="Budget management">
+                <span>Budget management</span>
+            </label>
+        </li>
+
+        <li class="reason-item">
+            <label class="row-click">
+                <input type="checkbox" class="sr" value="No interest">
+                <span>No interest</span>
+            </label>
+        </li>
+
+        <li class="reason-item">
+            <label class="row-click">
+                <input type="checkbox" class="sr" value="Avoid credit card debt">
+                <span>Avoid credit card debt</span>
+            </label>
+        </li>
+
+        <li class="reason-item">
+            <label class="row-click">
+                <input type="checkbox" class="sr" value="Convenience">
+                <span>Convenience</span>
+            </label>
+        </li>
+    </ul>
+</div>
+
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q8.3 ===================== -->
+<p><b>{{ form.bnpl_impulse_products.label }}</b></p>
+
+<!-- oTree will save into player.bnpl_impulse_products -->
+<input type="hidden" name="bnpl_impulse_products" id="bnpl_impulse_products_hidden"
+       value="{{ player.field_maybe_none('bnpl_impulse_products') }}">
+
+<div class="img-choice-grid">
+
+    <label class="img-choice">
+        <input type="checkbox" class="q83" value="Electronics">
+        <img src="{% static 'img/electronics.png' %}" alt="Electronics">
+        <div class="caption">Electronics</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="checkbox" class="q83" value="Clothing">
+        <img src="{% static 'img/clothing.png' %}" alt="Clothing">
+        <div class="caption">Clothing</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="checkbox" class="q83" value="Travel">
+        <img src="{% static 'img/travel.png' %}" alt="Travel">
+        <div class="caption">Travel</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="checkbox" class="q83" value="Groceries">
+        <img src="{% static 'img/groceries.png' %}" alt="Groceries">
+        <div class="caption">Groceries</div>
+    </label>
+
+    <label class="img-choice">
+        <input type="checkbox" class="q83" value="Other">
+        <img src="{% static 'img/other.png' %}" alt="Other">
+        <div class="caption">Other</div>
+    </label>
+
+</div>
+
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q8.4 ===================== -->
+<div class="question-block">
+    <p class="question-title"><b>{{ form.q8_4_expensive_bnpl.label }}</b></p>
+
+    <!-- oTree saves THIS -->
+    <input type="hidden" name="q8_4_expensive_bnpl" id="q8_4_hidden"
+           value="{{ player.field_maybe_none('q8_4_expensive_bnpl') }}">
+
+    <div class="slider-anchors">
+        <div><b>1:</b> Strongly agree</div>
+        <div><b>7:</b> Strongly disagree</div>
+    </div>
+
+    <div class="slider-scale">
+        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+    </div>
+
+    <input type="range" min="1" max="7" step="1" id="q8_4_slider" class="slider-input">
+
+
 </div>
 
 {{ next_button }}
+
+<script>
+(function () {
+  // ---------- Q8.1: provider tiles ----------
+  const providerHidden = document.getElementById('provider_hidden');
+  const providerOtherBox = document.getElementById('provider-other-box');
+  const providerOtherInput = document.querySelector('[name="provider_other"]');
+
+  function syncProvider() {
+    const checked = document.querySelector('input.prov:checked');
+    const val = checked ? checked.value : '';
+    providerHidden.value = val;
+
+    const isOther = (val === 'Other');
+    providerOtherBox.style.display = isOther ? 'block' : 'none';
+    if (providerOtherInput) {
+      providerOtherInput.required = !!isOther;
+      if (!isOther) providerOtherInput.value = '';
+    }
+  }
+
+  // pre-check if user returns to page (or has initial value)
+  const initialProvider = providerHidden.value || '';
+  if (initialProvider) {
+    const match = Array.from(document.querySelectorAll('input.prov'))
+      .find(x => x.value === initialProvider);
+    if (match) match.checked = true;
+  }
+
+  document.querySelectorAll('input.prov').forEach(r => r.addEventListener('change', syncProvider));
+  syncProvider();
+
+  // ---------- Q8.2: reasons ----------
+  const serviceHidden = document.getElementById('service_reason_hidden');
+
+  function syncServiceReason() {
+    const vals = Array.from(document.querySelectorAll('input.sr:checked')).map(x => x.value);
+    serviceHidden.value = vals.join(', ');
+  }
+
+  const initialReasons = (serviceHidden.value || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  if (initialReasons.length) {
+    document.querySelectorAll('input.sr').forEach(cb => {
+      if (initialReasons.includes(cb.value)) cb.checked = true;
+    });
+  }
+
+  document.querySelectorAll('input.sr').forEach(cb => cb.addEventListener('change', syncServiceReason));
+  syncServiceReason();
+
+  // ---------- Q8.3: products ----------
+  const q83Hidden = document.getElementById('bnpl_impulse_products_hidden');
+
+  function syncQ83() {
+    const vals = Array.from(document.querySelectorAll('input.q83:checked')).map(x => x.value);
+    q83Hidden.value = vals.join(', ');
+  }
+
+  const initialQ83 = (q83Hidden.value || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  if (initialQ83.length) {
+    document.querySelectorAll('input.q83').forEach(cb => {
+      if (initialQ83.includes(cb.value)) cb.checked = true;
+    });
+  }
+
+  document.querySelectorAll('input.q83').forEach(cb => cb.addEventListener('change', syncQ83));
+  syncQ83();
+
+  // ---------- Q8.4: slider ----------
+  const q84Hidden = document.getElementById('q8_4_hidden');
+  const q84Slider = document.getElementById('q8_4_slider');
+
+  const initial = q84Hidden.value ? parseInt(q84Hidden.value, 10) : 4;
+  q84Slider.value = initial;
+  q84Hidden.value = initial;
+
+  q84Slider.addEventListener('input', function () {
+    q84Hidden.value = q84Slider.value;
+  });
+})();
+</script>
+
+<style>
+  .img-choice-grid { display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; }
+  .img-choice { cursor:pointer; text-align:center; }
+  .img-choice input { display:none; }
+  .img-choice img{
+    width:150px; height:150px; object-fit:cover;
+    border:3px solid transparent; border-radius:10px;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .img-choice:hover img{ transform: scale(1.03); box-shadow: 0 6px 14px rgba(0,0,0,.15); }
+  .img-choice input:checked + img{ border-color:#0d6efd; }
+  .caption{ margin-top:6px; font-weight:500; }
+  .caption small{ font-weight:400; color:#666; }
+
+  .question-block {
+      margin-top: 20px;
+      padding: 18px 20px;
+      background: #f9fafb;
+      border-radius: 12px;
+  }
+  .question-title { margin: 0 0 10px 0; }
+
+  .reason-list{
+      list-style:none;
+      padding:0;
+      margin-top:14px;
+      max-width:560px;
+  }
+  .reason-item{
+      padding:12px 14px;
+      margin:10px 0;
+      background:#f3f4f6;
+      border-radius:10px;
+  }
+  .row-click{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      cursor:pointer;
+      margin:0;
+      user-select:none;
+  }
+  .row-click input[type="checkbox"]{
+      transform: scale(1.15);
+      margin: 0;
+  }
+
+  .slider-anchors{
+    display:flex;
+    justify-content:space-between;
+    margin-top:8px;
+    color:#111;
+  }
+  .slider-scale{
+    display:flex;
+    justify-content:space-between;
+    margin:10px 2px 6px 2px;
+    color:#444;
+  }
+  .slider-input{
+    width:100%;
+    margin-top:4px;
+    accent-color: #0d6efd;
+  }
+  .slider-value{
+    margin-top:10px;
+    color:#111;
+  }
+</style>
 
 {{ endblock }}
