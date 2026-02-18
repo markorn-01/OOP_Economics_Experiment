@@ -114,6 +114,18 @@ class Player(BasePlayer):
     q127 = make_time_choice()
     q128 = make_time_choice()
 
+    # Q13: Influence
+    bnpl_influence = models.StringField(
+        label="Q13: How does the availability of BNPL influence your decision to make a purchase now vs. later?",
+        choices=[
+            "Encourages immediate purchase",
+            "No effect",
+            "Delays purchase"
+        ],
+        widget=widgets.RadioSelect,
+    )
+
+
 # PAGES
 class Introduction(Page):
     pass
@@ -147,8 +159,8 @@ class Preference(Page):
                    'q125',
                    'q126',
                    'q127',
-                   'q128']
-                   # 'bnpl_influence']
+                   'q128',
+                   'bnpl_influence']
 
     @staticmethod
     def vars_for_template(player: Player):
