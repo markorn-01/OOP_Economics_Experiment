@@ -154,28 +154,57 @@
 <hr style="margin: 28px 0;">
 
 <!-- ===================== Q8.4 ===================== -->
+<!--<div class="question-block">-->
+<!--    <p class="question-title"><b>{{ form.q8_4_expensive_bnpl.label }}</b></p>-->
+
+<!--    &lt;!&ndash; oTree saves THIS &ndash;&gt;-->
+<!--    <input type="hidden" name="q8_4_expensive_bnpl" id="q8_4_hidden"-->
+<!--           value="{{ player.field_maybe_none('q8_4_expensive_bnpl') }}">-->
+
+<!--    <div class="slider-anchors">-->
+<!--        <div><b>1:</b> Strongly agree</div>-->
+<!--        <div><b>7:</b> Strongly disagree</div>-->
+<!--    </div>-->
+
+<!--    <div class="slider-scale">-->
+<!--        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>-->
+<!--    </div>-->
+
+<!--    <input type="range" min="1" max="7" step="1" value="4" id="q8_4_slider" class="slider-input">-->
+
+
+<!-- {{ formfield "q8_4_expensive_bnpl" }}-->
+<!--</div>-->
+
+<p><b>{{ form.q8_4_expensive_bnpl.label }}</b></p>
+
+<!-- value saved to oTree -->
+<input type="hidden" name="q8_4_expensive_bnpl" id="q8_4_hidden" value="4">
+
 <div class="question-block">
-    <p class="question-title"><b>{{ form.q8_4_expensive_bnpl.label }}</b></p>
-
-    <!-- oTree saves THIS -->
-    <input type="hidden" name="q8_4_expensive_bnpl" id="q8_4_hidden"
-           value="{{ player.field_maybe_none('q8_4_expensive_bnpl') }}">
-
     <div class="slider-anchors">
-        <div><b>1:</b> Strongly agree</div>
-        <div><b>7:</b> Strongly disagree</div>
+        <div><b>1: Strongly agree</b></div>
+        <div><b>7: Strongly disagree</b></div>
     </div>
 
     <div class="slider-scale">
         <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
     </div>
 
-    <input type="range" min="1" max="7" step="1" id="q8_4_slider" class="slider-input">
+    <input
+        type="range"
+        min="1"
+        max="7"
+        step="1"
+        value="4"
+        class="slider-input"
+        id="q8_4_slider"
+    />
 
+    {{ formfield_errors 'q8_4_expensive_bnpl' }}
 
 </div>
-
-{{ next_button }}
+    {{ next_button }}
 
 <script>
 (function () {
@@ -256,13 +285,18 @@
   const q84Hidden = document.getElementById('q8_4_hidden');
   const q84Slider = document.getElementById('q8_4_slider');
 
-  const initial = q84Hidden.value ? parseInt(q84Hidden.value, 10) : 4;
-  q84Slider.value = initial;
-  q84Hidden.value = initial;
+    // const initial = q84Hidden.value ? parseInt(q84Hidden.value, 10) : 4;
+    // q84Slider.value = initial;
+    // q84Hidden.value = initial;
 
-  q84Slider.addEventListener('input', function () {
-    q84Hidden.value = q84Slider.value;
-  });
+    // q84Slider.addEventListener('input', function () {
+    //   q84Hidden.value = q84Slider.value;
+    // });
+    function syncQ84() {
+        q84Hidden.value = q84Slider.value;
+    }
+    q84Slider.addEventListener('input', syncQ84);
+    syncQ84();
 })();
 </script>
 
