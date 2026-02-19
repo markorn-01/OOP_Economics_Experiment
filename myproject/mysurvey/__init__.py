@@ -151,7 +151,7 @@ class Player(BasePlayer):
             "No effect",
             "Delays purchase"
         ],
-        widget=widgets.RadioSelect,
+        widget=widgets.RadioSelect,)
     
 
 # PAGES
