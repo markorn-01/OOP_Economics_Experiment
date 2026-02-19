@@ -8,31 +8,121 @@
 <hr style="margin: 28px 0;">
 
 <!-- Q1–Q4: show label + options -->
-<div class="form-group">
-    <p><b>{{ form.age_group.label }}</b></p>
-    {{ form.age_group }}
+<p class="q14-label"><b>{{ form.age_group.label }}</b></p>
+<div class="q14-choices">
+
+    <label class="q14-item">
+        <input type="radio" name="age_group" value="18–24" required>
+        <span>18–24</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="age_group" value="25–40">
+        <span>25–40</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="age_group" value="41–56">
+        <span>41–56</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="age_group" value="57–65">
+        <span>57–65</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="age_group" value="65+">
+        <span>65+</span>
+    </label>
 </div>
+{{ formfield_errors 'age_group' }}
 
 <hr style="margin: 28px 0;">
 
-<div class="form-group">
-    <p><b>{{ form.gender.label }}</b></p>
-    {{ form.gender }}
+<p class="q14-label"><b>{{ form.gender.label }}</b></p>
+<div class="q14-choices">
+
+    <label class="q14-item">
+        <input type="radio" name="gender" value="Male" required>
+        <span>Male</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="gender" value="Female">
+        <span>Female</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="gender" value="Non-binary/Other">
+        <span>Non-binary/Other</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="gender" value="Prefer not to say">
+        <span>Prefer not to say</span>
+    </label>
 </div>
+{{ formfield_errors 'gender' }}
 
 <hr style="margin: 28px 0;">
 
-<div class="form-group">
-    <p><b>{{ form.income.label }}</b></p>
-    {{ form.income }}
+<p class="q14-label"><b>{{ form.income.label }}</b></p>
+<div class="q14-choices">
+
+    <label class="q14-item">
+        <input type="radio" name="income" value="<$30,000" required>
+        <span><$30,000</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="income" value="$30,000–$75,000">
+        <span>$30,000–$75,000</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="income" value=">$75,000">
+        <span>>$75,000</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="income" value="Prefer not to say">
+        <span>Prefer not to say</span>
+    </label>
 </div>
+{{ formfield_errors 'income' }}
 
 <hr style="margin: 28px 0;">
 
-<div class="form-group">
-    <p><b>{{ form.education.label }}</b></p>
-    {{ form.education }}
+<p class="q14-label"><b>{{ form.education.label }}</b></p>
+<div class="q14-choices">
+
+    <label class="q14-item">
+        <input type="radio" name="education" value="High school or less" required>
+        <span>High school or less</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="education" value="Some college">
+        <span>Some college</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="education" value="Bachelor’s degree">
+        <span>Bachelor’s degree</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="education" value="Postgraduate">
+        <span>Postgraduate</span>
+    </label>
+
+    <label class="q14-item">
+        <input type="radio" name="education" value="Other">
+        <span>Other</span>
+    </label>
 </div>
+{{ formfield_errors 'education' }}
 
 <hr style="margin: 28px 0;">
 
@@ -80,5 +170,42 @@
     }
     .img-choice input:checked + img { border-color:#0d6efd; }
     .caption { margin-top:6px; font-weight:500; }
+
+    .q14-label{ margin-bottom: 10px; }
+
+    .q14-choices{
+        max-width: 560px;
+    }
+
+    .q14-item{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        padding:12px 14px;
+        margin:10px 0;
+        background:#f3f4f6;
+        border-radius:10px;
+        cursor:pointer;
+        user-select:none;
+    }
+
+    /* hide the default radio circle */
+    .q14-item input[type="radio"]{
+        display:none;
+    }
+
+    /* selected style (like an active row) */
+    .q14-item:has(input:checked){
+        outline: 2px solid rgba(13,110,253,.35);
+        background: #eef4ff;
+    }
+
+    .q14-item:hover{
+        background:#eceef1;
+    }
+
+    .q14-item span{
+        font-weight: 400;
+    }
 </style>
 {{ endblock }}
