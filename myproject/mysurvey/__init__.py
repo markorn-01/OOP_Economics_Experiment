@@ -77,6 +77,35 @@ class Player(BasePlayer):
         widget=widgets.RadioSelectHorizontal
     )
 
+    # Optional
+    # Q8.1:
+    provider = models.StringField(
+        label='Q8.1: Which BNPL provider do you use most frequently?',
+        choices=['PayPal Pay in 4', 'Affirm', 'Klarna', 'After pay', 'Apple Pay Later', 'Other', 'None'],
+        widget=widgets.RadioSelect
+    )
+    provider_other = models.LongStringField(blank=True, label='Please specify')
+
+    # Q8.2:
+    service_reason = models.LongStringField(
+        label='Q8.2: Why do you use BNPL services? (Select all that apply)',
+        blank=False,
+    )
+
+    # Q8.3:
+    bnpl_impulse_products = models.LongStringField(
+        label='Q8.3: What types of products do you typically buy impulsively using BNPL? (Select all that apply)',
+        blank=True
+    )
+
+    # Q8.4:
+    q8_4_expensive_bnpl = models.IntegerField(
+        label='Q8.4: On a scale of 1–7 (1 = Strongly agree, 7 = Strongly disagree), rate the statement: '
+              'The more expensive the good is, the more I tend to use BNPL options.',
+        min=1,
+        max=7,
+    )
+
 
 # PAGES
 class Introduction(Page):
@@ -91,12 +120,30 @@ class Payment(Page):
     form_fields = ['payment_methods',
                    'factor_ranking',
                    'bnpl_frequency']
-                   # 'provider',
-                   # 'service_reason',
-                   # 'is_abandoned',
-                   # 'missed_bnpl',
-                   # 'product_type',
-                   # 'statement_rate']
+
+class OptionalPayment(Page):
+    form_model = 'player'
+    form_fields = ['provider',
+                   'provider_other',
+                   'service_reason',
+                   'bnpl_impulse_products',
+                   'q8_4_expensive_bnpl']
+
+    @staticmethod
+    def is_displayed(player):
+        return player.bnpl_frequency != 'Never'
+
+    @staticmethod
+    def error_message(player, values):
+        if values.get('provider') == 'Other' and not values.get('provider_other'):
+            return 'Please specify your "Other" BNPL provider.'
+        if not values.get('service_reason'):
+            return 'Please select at least one reason for Q8.2.'
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        if player.provider != 'Other':
+            player.provider_other = ''
 
 
 class Results(Page):
@@ -105,4 +152,4 @@ class Results(Page):
 class Test(Page):
     pass
 
-page_sequence = [Introduction, Demographics, Payment, Test]
+page_sequence = [Introduction, Demographics, Payment, OptionalPayment, Test]
