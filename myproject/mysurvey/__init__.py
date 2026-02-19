@@ -98,7 +98,7 @@ class Player(BasePlayer):
         label='Q8.3: What types of products do you typically buy impulsively using BNPL? (Select all that apply)',
         blank=True
     )
-
+    
     # Q8.4:
     q8_4_expensive_bnpl = models.IntegerField(
         label='Q8.4: On a scale of 1–7 (1 = Strongly agree, 7 = Strongly disagree), rate the statement: '
@@ -153,6 +153,28 @@ class Player(BasePlayer):
         ],
         widget=widgets.RadioSelect,)
     
+    #Section 4:
+    #Q14: BNPL vs. implulse shopping
+    def make_likert_1_5(label):
+        return models.IntegerField(label=label, min=1, max=5)
+
+    q14_1 = make_likert_1_5('Q14. Unplanned shopping is something … I do frequently.')
+    q14_2 = make_likert_1_5('Q14. Unplanned shopping is something … I do automatically.')
+    q14_3 = make_likert_1_5('Q14. Unplanned shopping is something … I do without having to consciously remember.')
+    q14_4 = make_likert_1_5('Q14. Unplanned shopping is something … that makes me feel weird if I do not do it.')
+    q14_5 = make_likert_1_5('Q14. Unplanned shopping is something … I do without thinking.')
+    q14_6 = make_likert_1_5('Q14. Unplanned shopping is something … would require effort not to do it.')
+    q14_7 = make_likert_1_5('Q14. Unplanned shopping is something … that belongs to my (daily, weekly, monthly) routine.')
+    q14_8 = make_likert_1_5('Q14. Unplanned shopping is something … I start doing before I realize I’m doing it.')
+    q14_9 = make_likert_1_5('Q14. Unplanned shopping is something … I would find hard not to do.')
+    q14_10 = make_likert_1_5('Q14. Unplanned shopping is something … I have no need to think about doing.')
+
+    # Q15: single choice
+    bnpl_necessities = models.StringField(
+        label='Q15: How would the availability of digital payment methods, especially Buy Now Pay Later for shopping necessities (e.g: PayPal and PayPal Pay in 4 in supermarkets) influence your decision to purchase?',
+        choices=['Encourages more purchase', 'No effect', 'Less purchase'],
+        widget=widgets.RadioSelect,
+    )
 
 # PAGES
 class Introduction(Page):
@@ -240,6 +262,29 @@ class Preference(Page):
 
         return dict(q11_rows=rows11, q12_rows=rows12)
 
+class Habit(Page):
+    form_model = 'player'
+    form_fields = [
+        'q14_1','q14_2','q14_3','q14_4','q14_5',
+        'q14_6','q14_7','q14_8','q14_9','q14_10',
+        'bnpl_necessities',
+    ]
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        q14_rows = [
+            ('q14_1',  '… I do frequently.'),
+            ('q14_2',  '… I do automatically.'),
+            ('q14_3',  '… I do without having to consciously remember.'),
+            ('q14_4',  '… that makes me feel weird if I do not do it.'),
+            ('q14_5',  '… I do without thinking.'),
+            ('q14_6',  '… would require effort not to do it.'),
+            ('q14_7',  '… that belongs to my (daily, weekly, monthly) routine.'),
+            ('q14_8',  '… I start doing before I realize I’m doing it.'),
+            ('q14_9',  '… I would find hard not to do.'),
+            ('q14_10', '… I have no need to think about doing.'),
+        ]
+        return dict(q14_rows=q14_rows)
 
 class Results(Page):
     pass
@@ -247,4 +292,4 @@ class Results(Page):
 class Test(Page):
     pass
 
-page_sequence = [Introduction, Demographics, Payment, OptionalPayment, Preference, Test]
+page_sequence = [Introduction, Demographics, Payment, OptionalPayment, Preference, Habit, Test]
