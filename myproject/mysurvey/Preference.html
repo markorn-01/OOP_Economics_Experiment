@@ -1,0 +1,348 @@
+{% load otree static %}
+
+{{ block title }}
+<b>Section 3: Intertemporal Preferences, Time and Interest rate Preferences</b>
+{{ endblock }}
+
+{{ block content }}
+
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q9 ===================== -->
+<div class="form-group">
+    <p><b>{{form.purchase_pref.label}}</b></p>
+
+    <div class="img-choice-grid">
+
+        <label class="img-choice">
+            <input type="radio" name="purchase_pref" value="pay_now" required>
+            <img src="{% static 'img/pay_now.png' %}" alt="pay_now">
+            <div class="caption">Pay now to avoid future debt</div>
+        </label>
+
+        <label class="img-choice">
+            <input type="radio" name="purchase_pref" value="spread_payment" required>
+            <img src="{% static 'img/spread_payment.png' %}" alt="spread_payment">
+            <div class="caption">Spread payments over time</div>
+        </label>
+
+    </div>
+
+     {% if form.purchase_pref.errors %}
+        {{ form.purchase_pref.errors }}
+    {% endif %}
+</div>
+
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q10 ===================== -->
+<p><b>{{ form.scale_pref.label }}</b></p>
+
+<!-- value saved to oTree -->
+<input type="hidden" name="scale_pref" id="q10_hidden" value="4">
+
+<div class="q10-scale">
+    <div class="q10-anchors">
+        <div class="q10-left"><b>1: Strongly prefer immediate gratification</b></div>
+        <div class="q10-right"><b>7: Strongly prefer long-term benefits</b></div>
+    </div>
+
+    <div class="q10-numbers">
+        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+    </div>
+
+    <input
+        type="range"
+        min="1"
+        max="7"
+        step="1"
+        value="4"
+        class="q10-slider"
+        id="q10_slider"
+    />
+
+    {{ formfield_errors 'scale_pref' }}
+</div>
+
+<script>
+    const slider = document.getElementById('q10_slider');
+    const hidden = document.getElementById('q10_hidden');
+
+    function syncQ10() {
+        hidden.value = slider.value;
+        out.textContent = slider.value;
+    }
+
+    slider.addEventListener('input', syncQ10);
+    syncQ10();
+</script>
+
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q11 ===================== -->
+<p class="q11-title"><b>Q11: Would you prefer to pay €1000 today or a higher amount in 4–6 weeks?</b></p>
+
+<table class="q11">
+    <thead>
+        <tr>
+            <th class="amt"></th>
+            <th class="hdr">paying<br>today</th>
+            <th class="hdr">paying<br>in 4–6<br>weeks</th>
+            <th class="amt"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{ for fname, amt, later_amt in q11_rows }}
+        <tr>
+            <td class="amt">€{{ amt }}</td>
+
+            <td class="pick">
+                <input class="q11-radio" type="radio" name="{{ fname }}" value="1" required>
+            </td>
+
+            <td class="pick">
+                <input class="q11-radio" type="radio" name="{{ fname }}" value="2">
+            </td>
+
+            <td class="amt">€{{ later_amt }}</td>
+        </tr>
+        {{ endfor }}
+    </tbody>
+</table>
+
+{{ formfield_errors 'q111' }}
+{{ formfield_errors 'q112' }}
+{{ formfield_errors 'q113' }}
+{{ formfield_errors 'q114' }}
+{{ formfield_errors 'q115' }}
+{{ formfield_errors 'q116' }}
+{{ formfield_errors 'q117' }}
+{{ formfield_errors 'q118' }}
+
+<hr style="margin: 28px 0;">
+
+<!-- ===================== Q12 ===================== -->
+<p class="q11-title"><b>Q12: Would you prefer to pay €1000 today or a higher amount in 3–6 months?</b></p>
+
+<table class="q11">
+    <thead>
+        <tr>
+            <th class="amt"></th>
+            <th class="hdr">paying<br>today</th>
+            <th class="hdr">paying<br>in 3-6<br>months</th>
+            <th class="amt"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{ for fname, amt, later_amt in q12_rows }}
+        <tr>
+            <td class="amt">€{{ amt }}</td>
+
+            <td class="pick">
+                <input class="q11-radio" type="radio" name="{{ fname }}" value="1" required>
+            </td>
+
+            <td class="pick">
+                <input class="q11-radio" type="radio" name="{{ fname }}" value="2">
+            </td>
+
+            <td class="amt">€{{ later_amt }}</td>
+        </tr>
+        {{ endfor }}
+    </tbody>
+</table>
+
+{{ formfield_errors 'q121' }}
+{{ formfield_errors 'q122' }}
+{{ formfield_errors 'q123' }}
+{{ formfield_errors 'q124' }}
+{{ formfield_errors 'q125' }}
+{{ formfield_errors 'q126' }}
+{{ formfield_errors 'q127' }}
+{{ formfield_errors 'q128' }}
+
+<!--<hr style="margin: 28px 0;">-->
+
+<!--<div class="q13-block">-->
+<!--    <p><b>{{ form.bnpl_influence.label }}</b></p>-->
+<!--    {{ form.bnpl_influence}}-->
+<!--</div>-->
+
+<hr style="margin: 28px 0;">
+
+<p class="q13-label"><b>{{ form.bnpl_influence.label }}</b></p>
+<div class="q13-choices">
+
+    <label class="q13-item">
+        <input type="radio" name="bnpl_influence" value="Encourages immediate purchase" required>
+        <span>Encourages immediate purchase</span>
+    </label>
+
+    <label class="q13-item">
+        <input type="radio" name="bnpl_influence" value="No effect">
+        <span>No effect</span>
+    </label>
+
+    <label class="q13-item">
+        <input type="radio" name="bnpl_influence" value="Delays purchase">
+        <span>Delays purchase</span>
+    </label>
+
+</div>
+
+{{ formfield_errors 'bnpl_influence' }}
+
+{{ next_button }}
+<style>
+    .img-choice img {
+        width: 355px;          /* increase width */
+        height: 290px;         /* increase height */
+        object-fit: cover;
+        border: 4px solid transparent;
+        border-radius: 12px;
+        transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .img-choice:hover img {
+        transform: scale(1.03);
+        box-shadow: 0 8px 18px rgba(0,0,0,.2);
+    }
+
+    .img-choice input:checked + img {
+        border: 4px solid #0d6efd;
+    }
+
+    .img-choice-grid {
+        display: flex;
+        justify-content: center;   /* center horizontally */
+        align-items: center;
+        gap: 60px;                 /* space between images */
+        margin-top: 30px;
+    }
+
+    .img-choice input {
+        display: none;
+    }
+
+    .img-choice {
+        cursor: pointer;
+        text-align: center;   /* center caption */
+    }
+
+    .caption {
+        margin-top: 12px;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .q10-scale{
+        max-width: 720px;
+        margin-top: 12px;
+    }
+
+    .q10-anchors{
+        display:flex;
+        justify-content:space-between;
+        font-size:14px;
+        color:#333;
+        margin-bottom: 8px;
+    }
+
+    .q10-numbers{
+        display:flex;
+        justify-content:space-between;
+        font-size:14px;
+        color:#333;
+        margin: 6px 0 10px;
+        padding: 0 2px;
+    }
+
+    .q10-slider{
+        width: 100%;
+    }
+
+    .q10-value{
+        margin-top: 8px;
+        font-size: 14px;
+        color:#333;
+    }
+
+    .q11-title{
+      margin-top: 18px;
+      margin-bottom: 18px;
+      font-size: 18px;
+    }
+
+    table.q11{
+      margin: 0 auto;
+      border-collapse: collapse;
+      font-size: 16px;
+    }
+
+    table.q11 th, table.q11 td{
+      padding: 10px 24px;
+      text-align: center;
+      border: none;
+    }
+
+    table.q11 thead th.hdr{
+      font-weight: 500;
+      color: #444;
+    }
+
+    table.q11 td.amt, table.q11 th.amt{
+      width: 140px;
+      color: #444;
+    }
+
+    table.q11 td.pick{
+      width: 80px;
+    }
+
+    .q11-radio{
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+
+    .q13-label{ margin-bottom: 10px; }
+
+    .q13-choices{
+        max-width: 560px;
+    }
+
+    .q13-item{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        padding:12px 14px;
+        margin:10px 0;
+        background:#f3f4f6;
+        border-radius:10px;
+        cursor:pointer;
+        user-select:none;
+    }
+
+    /* hide the default radio circle */
+    .q13-item input[type="radio"]{
+        display:none;
+    }
+
+    /* selected style (like an active row) */
+    .q13-item:has(input:checked){
+        outline: 2px solid rgba(13,110,253,.35);
+        background: #eef4ff;
+    }
+
+    .q13-item:hover{
+        background:#eceef1;
+    }
+
+    .q13-item span{
+        font-weight: 400;
+    }
+
+</style>
+
+{{ endblock }}
