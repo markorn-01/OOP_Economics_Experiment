@@ -1,5 +1,3 @@
-from symtable import Class
-
 from charset_normalizer import models
 from otree.api import *
 
@@ -21,6 +19,9 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     pass
 
+# Q11: Intertemporal choice rows
+def make_time_choice():
+    return models.IntegerField(choices=[[1, ""], [2, ""]], blank=False)
 
 class Player(BasePlayer):
     # Section 1:
@@ -76,7 +77,82 @@ class Player(BasePlayer):
         choices=['Never', 'Rarely', 'Sometimes', 'Often', 'Always'],
         widget=widgets.RadioSelectHorizontal
     )
+    
+    # Optional
+    # Q8.1:
+    provider = models.StringField(
+        label='Q8.1: Which BNPL provider do you use most frequently?',
+        choices=['PayPal Pay in 4', 'Affirm', 'Klarna', 'After pay', 'Apple Pay Later', 'Other', 'None'],
+        widget=widgets.RadioSelect
+    )
+    provider_other = models.LongStringField(blank=True, label='Please specify')
 
+    # Q8.2:
+    service_reason = models.LongStringField(
+        label='Q8.2: Why do you use BNPL services? (Select all that apply)',
+        blank=False,
+    )
+
+    # Q8.3:
+    bnpl_impulse_products = models.LongStringField(
+        label='Q8.3: What types of products do you typically buy impulsively using BNPL? (Select all that apply)',
+        blank=True
+    )
+    
+    # Q8.4:
+    q8_4_expensive_bnpl = models.IntegerField(
+        label='Q8.4: On a scale of 1–7 (1 = Strongly agree, 7 = Strongly disagree), rate the statement: '
+              'The more expensive the good is, the more I tend to use BNPL options.',
+        min=1,
+        max=7,
+    )
+    
+    # Section 3:
+    # Q9: Purchase preference
+    purchase_pref = models.StringField(
+        label='Q9: When making purchases, do you prefer to:',
+        choices=[ ('pay_now', 'Pay now to avoid future debt'),
+                    ('spread_payment', 'Spread payments over time')]
+    )
+
+    # Q10: slider 1–7
+    scale_pref = models.IntegerField(
+        label='Q10: On a scale of 1–7, '
+              'how would you rate your preference for spending now vs. saving for the future?',
+        min=1,
+        max=7,
+    )
+
+    # Q11: Week preference
+    q111 = make_time_choice()
+    q112 = make_time_choice()
+    q113 = make_time_choice()
+    q114 = make_time_choice()
+    q115 = make_time_choice()
+    q116 = make_time_choice()
+    q117 = make_time_choice()
+    q118 = make_time_choice()
+
+    # Q12: Month preference
+    q121 = make_time_choice()
+    q122 = make_time_choice()
+    q123 = make_time_choice()
+    q124 = make_time_choice()
+    q125 = make_time_choice()
+    q126 = make_time_choice()
+    q127 = make_time_choice()
+    q128 = make_time_choice()
+
+    # Q13: Influence
+    bnpl_influence = models.StringField(
+        label="Q13: How does the availability of BNPL influence your decision to make a purchase now vs. later?",
+        choices=[
+            "Encourages immediate purchase",
+            "No effect",
+            "Delays purchase"
+        ],
+        widget=widgets.RadioSelect,)
+    
     #Section 4:
     #Q14: BNPL vs. implulse shopping
     def make_likert_1_5(label):
@@ -113,12 +189,78 @@ class Payment(Page):
     form_fields = ['payment_methods',
                    'factor_ranking',
                    'bnpl_frequency']
-                   # 'provider',
-                   # 'service_reason',
-                   # 'is_abandoned',
-                   # 'missed_bnpl',
-                   # 'product_type',
-                   # 'statement_rate']
+      
+class OptionalPayment(Page):
+    form_model = 'player'
+    form_fields = ['provider',
+                   'provider_other',
+                   'service_reason',
+                   'bnpl_impulse_products',
+                   'q8_4_expensive_bnpl']
+
+    @staticmethod
+    def is_displayed(player):
+        return player.bnpl_frequency != 'Never'
+
+    @staticmethod
+    def error_message(player, values):
+        if values.get('provider') == 'Other' and not values.get('provider_other'):
+            return 'Please specify your "Other" BNPL provider.'
+        if not values.get('service_reason'):
+            return 'Please select at least one reason for Q8.2.'
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        if player.provider != 'Other':
+            player.provider_other = ''
+
+class Preference(Page):
+    form_model = 'player'
+    form_fields = ['purchase_pref',
+                   'scale_pref',
+                   'q111',
+                   'q112',
+                   'q113',
+                   'q114',
+                   'q115',
+                   'q116',
+                   'q117',
+                   'q118',
+                   'q121',
+                   'q122',
+                   'q123',
+                   'q124',
+                   'q125',
+                   'q126',
+                   'q127',
+                   'q128',
+                   'bnpl_influence']
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        rows11 = [
+            ('q111', 1000, 1002),
+            ('q112', 1000, 1004),
+            ('q113', 1000, 1006),
+            ('q114', 1000, 1010),
+            ('q115', 1000, 1015),
+            ('q116', 1000, 1022),
+            ('q117', 1000, 1030),
+            ('q118', 1000, 1040),
+        ]
+
+        rows12 = [
+            ('q121', 1000, 1007),
+            ('q122', 1000, 1014),
+            ('q123', 1000, 1021),
+            ('q124', 1000, 1035),
+            ('q125', 1000, 1053),
+            ('q126', 1000, 1079),
+            ('q127', 1000, 1109),
+            ('q128', 1000, 1147),
+        ]
+
+        return dict(q11_rows=rows11, q12_rows=rows12)
 
 class Habit(Page):
     form_model = 'player'
@@ -150,4 +292,4 @@ class Results(Page):
 class Test(Page):
     pass
 
-page_sequence = [Introduction, Demographics, Payment, Habit, Test]
+page_sequence = [Introduction, Demographics, Payment, OptionalPayment, Preference, Habit, Test]
