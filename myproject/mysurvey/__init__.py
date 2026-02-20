@@ -129,9 +129,6 @@ class Player(BasePlayer):
     q113 = make_time_choice()
     q114 = make_time_choice()
     q115 = make_time_choice()
-    q116 = make_time_choice()
-    q117 = make_time_choice()
-    q118 = make_time_choice()
 
     # Q12: Month preference
     q121 = make_time_choice()
@@ -139,9 +136,6 @@ class Player(BasePlayer):
     q123 = make_time_choice()
     q124 = make_time_choice()
     q125 = make_time_choice()
-    q126 = make_time_choice()
-    q127 = make_time_choice()
-    q128 = make_time_choice()
 
     # Q13: Influence
     bnpl_influence = models.StringField(
@@ -223,44 +217,33 @@ class Preference(Page):
                    'q113',
                    'q114',
                    'q115',
-                   'q116',
-                   'q117',
-                   'q118',
                    'q121',
                    'q122',
                    'q123',
                    'q124',
                    'q125',
-                   'q126',
-                   'q127',
-                   'q128',
                    'bnpl_influence']
+
+    rows11 = [
+        ('q111', 1000, 1002),
+        ('q112', 1000, 1004),
+        ('q113', 1000, 1009),
+        ('q114', 1000, 1015),
+        ('q115', 1000, 1022),
+    ]
+
+    rows12 = [
+        ('q121', 1000, 1007),
+        ('q122', 1000, 1014),
+        ('q123', 1000, 1021),
+        ('q124', 1000, 1035),
+        ('q125', 1000, 1053),
+    ]
 
     @staticmethod
     def vars_for_template(player: Player):
-        rows11 = [
-            ('q111', 1000, 1002),
-            ('q112', 1000, 1004),
-            ('q113', 1000, 1006),
-            ('q114', 1000, 1010),
-            ('q115', 1000, 1015),
-            ('q116', 1000, 1022),
-            ('q117', 1000, 1030),
-            ('q118', 1000, 1040),
-        ]
 
-        rows12 = [
-            ('q121', 1000, 1007),
-            ('q122', 1000, 1014),
-            ('q123', 1000, 1021),
-            ('q124', 1000, 1035),
-            ('q125', 1000, 1053),
-            ('q126', 1000, 1079),
-            ('q127', 1000, 1109),
-            ('q128', 1000, 1147),
-        ]
-
-        return dict(q11_rows=rows11, q12_rows=rows12)
+        return dict(q11_rows=Preference.rows11, q12_rows=Preference.rows12)
 
 class Habit(Page):
     form_model = 'player'
@@ -270,21 +253,186 @@ class Habit(Page):
         'bnpl_necessities',
     ]
 
+    q14_rows = [
+        ('q14_1',  '… I do frequently.'),
+        ('q14_2',  '… I do automatically.'),
+        ('q14_3',  '… I do without having to consciously remember.'),
+        ('q14_4',  '… that makes me feel weird if I do not do it.'),
+        ('q14_5',  '… I do without thinking.'),
+        ('q14_6',  '… would require effort not to do it.'),
+        ('q14_7',  '… that belongs to my (daily, weekly, monthly) routine.'),
+        ('q14_8',  '… I start doing before I realize I’m doing it.'),
+        ('q14_9',  '… I would find hard not to do.'),
+        ('q14_10', '… I have no need to think about doing.'),
+    ]
+
     @staticmethod
     def vars_for_template(player: Player):
-        q14_rows = [
-            ('q14_1',  '… I do frequently.'),
-            ('q14_2',  '… I do automatically.'),
-            ('q14_3',  '… I do without having to consciously remember.'),
-            ('q14_4',  '… that makes me feel weird if I do not do it.'),
-            ('q14_5',  '… I do without thinking.'),
-            ('q14_6',  '… would require effort not to do it.'),
-            ('q14_7',  '… that belongs to my (daily, weekly, monthly) routine.'),
-            ('q14_8',  '… I start doing before I realize I’m doing it.'),
-            ('q14_9',  '… I would find hard not to do.'),
-            ('q14_10', '… I have no need to think about doing.'),
-        ]
-        return dict(q14_rows=q14_rows)
+        return dict(q14_rows=Habit.q14_rows)
+
+class Insights(Page):
+    form_model = 'player'
+
+    @staticmethod
+    def vars_for_template(player: Player):
+
+        # Init a dictionary to collect facts
+        dict = {}
+
+        # FACT 1: Calculate the percentage based on selected age group and frequency of using BNPL
+        # Create a base for age group and frequency 2D-array
+        age_freq_base = {
+            "18–24": {"Yes": 20, "No": 2},
+            "25–40": {"Yes": 15, "No": 5},
+            "41–56": {"Yes": 10, "No": 20},
+            "57–65": {"Yes": 2, "No": 30},
+            "65+": {"Yes": 1, "No": 20}
+        }
+
+        # Collect the value of age_group from the player
+        selected_age = player.age_group
+
+        # For q8 if player chose 'Never' then it would be classified as 'No', otherwise 'Yes'
+        frequency = 'No' if player.bnpl_frequency == 'Never' else 'Yes'
+
+        # Add this player to the number of people from the same age group and frequency
+        age_freq_base[selected_age][frequency] += 1
+
+        # Sum up and calculate percentage
+        total_age = sum(age_freq_base[selected_age].values())
+        percentage = round(age_freq_base[selected_age][frequency] / total_age * 100, 2)
+
+        # Add percentage to dict
+        dict["percentage"] = percentage
+
+        # FACT 2.1: Show the most popular factor in q7
+        # Create base for factors
+        factor_base = {
+            "Convenience": 9,
+            "Security": 4,
+            "Trust in provider": 4,
+            "Cost": 3,
+            "Speed": 5
+        }
+
+        # Get the first ranked factor of player
+        player_first_factor = player.factor_ranking.split(' | ')[0]
+
+        # Add the first ranked factor of player to the base
+        factor_base[player_first_factor] += 1
+
+        # Get the most first-ranked factor
+        first_factor = max(factor_base, key=factor_base.get)
+
+        # Add the most popular factor to dict
+        dict["first_factor"] = first_factor
+
+        # FACT 2.2: Show the most popular provider in q8.1
+        if frequency == 'Yes':
+            # Create base for providers
+            provider_base = {
+                "PayPal Pay in 4": 12,
+                "Affirm": 4,
+                "Klarna": 8,
+                "After pay": 3,
+                "Apple Pay Later": 6
+            }
+
+            # Get the chosen provider of player
+            player_most_provider = player.provider
+
+            # If player did not choose "Other" nor "None", add the chosen provider of player to the base
+            if player_most_provider not in ["Other", "None"]:
+                provider_base[player_most_provider] += 1
+
+            # Get the most chosen provider
+            most_provider = max(provider_base, key=provider_base.get)
+
+            # Add the most popular provider to dict
+            dict["most_provider"] = most_provider
+
+        # FACT 3:
+        # Calculate the turning numbers for q11 and q12
+        # Create a list of questions
+        question_11_list = [player.q111, player.q112, player.q113, player.q114, player.q115]
+        idx_11 = len(question_11_list)-1
+
+        # Create a base turning amount
+        past_turn_amount = [1000, 1004, 1000, 1009, 1022]
+        len_turn_amount = len(past_turn_amount)
+        sum_turn_amount = sum(past_turn_amount)
+
+
+        # Find the turning point if it is valid
+        for q in range(1, len(question_11_list)):
+            if question_11_list[q] != question_11_list[q-1]:
+                if question_11_list[q-1] == 1:
+                    idx_11 = q
+                else:
+                    idx_11 = -1
+                break
+
+        # Check if the question was answered rationally
+        if idx_11 != -1:
+            for q in range(idx_11, len(question_11_list)-1):
+                if question_11_list[q] != question_11_list[q+1]:
+                    idx_11 = -1
+                    break
+
+            rows11 = Preference.rows11
+            _, left_amt, right_amt = rows11[idx_11]
+
+            choice_val = question_11_list[idx_11]  # 1 or 2
+            chosen_amt = left_amt if choice_val == 1 else right_amt
+            sum_turn_amount += chosen_amt
+            len_turn_amount += 1
+
+        dict["turn_amount_q11_ave"] = round(sum_turn_amount / len_turn_amount, 2)
+
+
+        # Q12
+        question_12_list = [player.q121, player.q122, player.q123, player.q124, player.q125]
+        idx_12 = len(question_12_list) - 1
+
+        # Create a base turning amount
+        past_turn_amount_12 = [1007, 1021, 1000, 1053, 1014]
+        len_turn_amount_12 = len(past_turn_amount_12)
+        sum_turn_amount_12 = sum(past_turn_amount_12)
+
+        # Find the turning point if it is valid
+        for q in range(1, len(question_12_list)):
+            if question_12_list[q] != question_12_list[q - 1]:
+                if question_12_list[q - 1] == 1:
+                    idx_12 = q
+                else:
+                    idx_12 = -1
+                break
+
+        # Check if the question was answered rationally
+        if idx_12 != -1:
+            for q in range(idx_12, len(question_12_list) - 1):
+                if question_12_list[q] != question_12_list[q + 1]:
+                    idx_12 = -1
+                    break
+
+            rows12 = Preference.rows12
+            _, left_amt, right_amt = rows12[idx_12]
+
+            choice_val = question_12_list[idx_12]  # 1 or 2
+            chosen_amt = left_amt if choice_val == 1 else right_amt
+            sum_turn_amount_12 += chosen_amt
+            len_turn_amount_12 += 1
+        dict["turn_amount_q12_ave"] = round(sum_turn_amount_12 / len_turn_amount_12, 2)
+
+        # FACT 4:
+        question_14_list = [player.q14_1, player.q14_2,
+                            player.q14_3, player.q14_4,
+                            player.q14_5, player.q14_6,
+                            player.q14_7, player.q14_8,
+                            player.q14_9, player.q14_10]
+        q14_ave = round(sum(question_14_list) / len(question_14_list),2)
+        dict['q14_ave'] = q14_ave
+        return dict
 
 class Results(Page):
     pass
@@ -292,4 +440,4 @@ class Results(Page):
 class Test(Page):
     pass
 
-page_sequence = [Introduction, Demographics, Payment, OptionalPayment, Preference, Habit, Test]
+page_sequence = [Introduction, Demographics, Payment, OptionalPayment, Preference, Habit, Insights, Test]
