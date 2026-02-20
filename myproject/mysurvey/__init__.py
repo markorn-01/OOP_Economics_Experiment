@@ -432,6 +432,22 @@ class Insights(Page):
                             player.q14_9, player.q14_10]
         q14_ave = round(sum(question_14_list) / len(question_14_list),2)
         dict['q14_ave'] = q14_ave
+        if q14_ave <= 2.4:
+            q14_text = (
+                "➜ Your unplanned shopping is usually deliberate rather than automatic.<br> "
+                "➜ You tend to think before buying, so impulses are less likely to drive your choices."
+            )
+        elif q14_ave <= 3.4:
+            q14_text = (
+                "➜ You sometimes buy impulsively, especially in certain situations.<br> "
+                "➜ Impulses may influence you occasionally, but the behavior is not consistently automatic."
+            )
+        else:
+            q14_text = (
+                "➜ Unplanned shopping may be a strong habit for you.<br> "
+                "➜ It can happen automatically with little deliberation, suggesting a more routine pattern."
+            )
+        dict["q14_text"] = q14_text
         return dict
 
 class Results(Page):
