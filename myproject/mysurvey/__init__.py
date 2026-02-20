@@ -242,8 +242,8 @@ class Preference(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-
-        return dict(q11_rows=Preference.rows11, q12_rows=Preference.rows12)
+        return dict(q11_rows=Preference.rows11,
+                    q12_rows=Preference.rows12)
 
 class Habit(Page):
     form_model = 'player'
@@ -308,11 +308,11 @@ class Insights(Page):
         # FACT 2.1: Show the most popular factor in q7
         # Create base for factors
         factor_base = {
-            "Convenience": 9,
-            "Security": 4,
-            "Trust in provider": 4,
-            "Cost": 3,
-            "Speed": 5
+            "Convenience": 8,
+            "Security": 8,
+            "Trust in provider": 8,
+            "Cost": 8,
+            "Speed": 8
         }
 
         # Get the first ranked factor of player
@@ -322,19 +322,32 @@ class Insights(Page):
         factor_base[player_first_factor] += 1
 
         # Get the most first-ranked factor
-        first_factor = max(factor_base, key=factor_base.get)
+        max_value = max(factor_base.values())
+
+        top_factors = [
+            key for key, value in factor_base.items()
+            if value == max_value
+        ]
+
+        if len(top_factors) == 1:
+            first_factors = top_factors[0]
+        elif len(top_factors) == 2:
+            first_factors = " and ".join(top_factors)
+        else:
+            first_factors = ", ".join(top_factors[:-1]) + " and " + top_factors[-1]
 
         # Add the most popular factor to dict
-        dict["first_factor"] = first_factor
+        dict["first_factors"] = first_factors
+        dict["num_factors"] = len(top_factors)
 
         # FACT 2.2: Show the most popular provider in q8.1
         # Create base for providers
         provider_base = {
-            "PayPal Pay in 4": 12,
-            "Affirm": 4,
+            "PayPal Pay in 4": 8,
+            "Affirm": 8,
             "Klarna": 8,
-            "After pay": 3,
-            "Apple Pay Later": 6
+            "After pay": 8,
+            "Apple Pay Later": 8
         }
         if frequency == 'Yes':
 
@@ -346,10 +359,23 @@ class Insights(Page):
                 provider_base[player_most_provider] += 1
 
         # Get the most chosen provider
-        most_provider = max(provider_base, key=provider_base.get)
+        max_value = max(provider_base.values())
+
+        top_providers = [
+            key for key, value in provider_base.items()
+            if value == max_value
+        ]
+
+        if len(top_providers) == 1:
+            most_providers = top_providers[0]
+        elif len(top_providers) == 2:
+            most_providers = " and ".join(top_providers)
+        else:
+            most_providers = ", ".join(top_providers[:-1]) + " and " + top_providers[-1]
 
         # Add the most popular provider to dict
-        dict["most_provider"] = most_provider
+        dict["most_providers"] = most_providers
+        dict["num_providers"] = len(top_providers)
 
         # FACT 3:
         # Calculate the turning numbers for q11 and q12
@@ -379,13 +405,15 @@ class Insights(Page):
                     idx_11 = -1
                     break
 
-            rows11 = Preference.rows11
-            _, left_amt, right_amt = rows11[idx_11]
+            # If after turning point it is still a valid answer, then collect it.
+            if idx_11 != -1:
+                rows11 = Preference.rows11
+                _, left_amt, right_amt = rows11[idx_11]
 
-            choice_val = question_11_list[idx_11]  # 1 or 2
-            chosen_amt = left_amt if choice_val == 1 else right_amt
-            sum_turn_amount += chosen_amt
-            len_turn_amount += 1
+                choice_val = question_11_list[idx_11]  # 1 or 2
+                chosen_amt = left_amt if choice_val == 1 else right_amt
+                sum_turn_amount += chosen_amt
+                len_turn_amount += 1
 
         dict["turn_amount_q11_ave"] = round(sum_turn_amount / len_turn_amount, 2)
 
@@ -415,16 +443,18 @@ class Insights(Page):
                     idx_12 = -1
                     break
 
-            rows12 = Preference.rows12
-            _, left_amt, right_amt = rows12[idx_12]
+            # If after turning point it is still a valid answer, then collect it.
+            if idx_12 != -1:
+                rows12 = Preference.rows12
+                _, left_amt, right_amt = rows12[idx_12]
 
-            choice_val = question_12_list[idx_12]  # 1 or 2
-            chosen_amt = left_amt if choice_val == 1 else right_amt
-            sum_turn_amount_12 += chosen_amt
-            len_turn_amount_12 += 1
+                choice_val = question_12_list[idx_12]  # 1 or 2
+                chosen_amt = left_amt if choice_val == 1 else right_amt
+                sum_turn_amount_12 += chosen_amt
+                len_turn_amount_12 += 1
         dict["turn_amount_q12_ave"] = round(sum_turn_amount_12 / len_turn_amount_12, 2)
 
-        # FACT 4:
+        # FACT 4: Indications from unplanned shopping score
         question_14_list = [player.q14_1, player.q14_2,
                             player.q14_3, player.q14_4,
                             player.q14_5, player.q14_6,
@@ -447,6 +477,7 @@ class Insights(Page):
                 "➜ Unplanned shopping may be a strong habit for you.<br> "
                 "➜ It can happen automatically with little deliberation, suggesting a more routine pattern."
             )
+
         dict["q14_text"] = q14_text
         return dict
 

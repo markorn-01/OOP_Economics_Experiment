@@ -7,17 +7,27 @@
 <div class="section-subtitle">📊 Here’s what we found about you and other participants:</div>
 
     <p class="info-text">
-        ✅ Among participants aged <b>{{ player.age_group }}</b>,
-        <b>{{ percentage }}%</b> reported using <b>Buy Now, Pay Later (BNPL)</b> services.
+        ✅ Among participants aged <b>{{ player.age_group }}</b>, you are in <b>{{ percentage }}%</b> reported
+        {{if player.bnpl_frequency == 'Never'}} <b>not</b> {{else}} {{endif}}
+        using <b>Buy Now, Pay Later (BNPL)</b> services.
     </p>
 
     <p class="info-text">
-        💳 The most influential factor when choosing a payment method was
-        <b>{{ first_factor }}</b>.
+        {{if num_factors == 1}}
+            💳 The most influential factor when choosing a payment method was
+        {{else}}
+            💳 The most influential factors when choosing a payment method were
+        {{endif}}
+        <b>{{ first_factors }}</b>.
     </p>
 
     <p class="info-text">
-        🏆 <b>{{ most_provider }}</b> was the most popular BNPL provider in this survey.
+        🏆 <b>{{ most_providers }}</b>
+        {{if num_providers == 1}}
+            was the most popular BNPL provider in this survey.
+        {{else}}
+            were the most popular BNPL providers in this survey.
+        {{endif}}
     </p>
 
 <div class="info-divider"></div>
