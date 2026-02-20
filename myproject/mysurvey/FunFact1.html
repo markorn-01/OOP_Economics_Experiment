@@ -1,0 +1,60 @@
+{% load otree static %}
+
+{{ block title }}
+<b>Did you know?</b>
+{{ endblock }}
+
+{{ block content }}
+
+<hr style="margin: 28px 0;">
+
+<div class="ff-card">
+
+  <p class="ff-text">
+    One-tap payments remove “speed bumps” — and speed bumps are often where the brain says:
+    <b>“wait… do I need this?”</b> 😅
+  </p>
+
+  <div class="ff-meme">
+    <img class="ff-img" src="{% static 'img/funfact_speedbump_meme.jpg' %}" alt="One-tap payments meme">
+    <div class="ff-caption">One tap. Zero hesitation.</div>
+  </div>
+</div>
+
+{{ next_button }}
+
+<style>
+  .ff-card{
+    max-width: 860px;
+    margin: 0 auto;
+    padding:18px 20px;
+    background:#f9fafb;
+    border-radius:12px;
+  }
+  .ff-kicker{
+    margin: 0 0 10px 0;
+    font-weight: 700;
+  }
+  .ff-text{
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    line-height: 1.4;
+  }
+  .ff-meme{
+    text-align:center;
+  }
+  .ff-img{
+    width: 100%;
+    max-width: 620px;
+    border-radius: 12px;
+    border: 3px solid #e5e7eb;
+    object-fit: cover;
+  }
+  .ff-caption{
+    margin-top: 8px;
+    color:#555;
+    font-size: 13px;
+  }
+</style>
+
+{{ endblock }}
