@@ -262,6 +262,9 @@ class Preference(Page):
 
         return dict(q11_rows=rows11, q12_rows=rows12)
 
+class FunFact2(Page):
+    pass
+
 class Habit(Page):
     form_model = 'player'
     form_fields = [
@@ -292,4 +295,4 @@ class Results(Page):
 class Test(Page):
     pass
 
-page_sequence = [Introduction, Demographics, Payment, OptionalPayment, Preference, Habit, Test]
+page_sequence = [Introduction, Demographics, Payment, OptionalPayment, Preference, FunFact2, Habit, Test]
