@@ -214,6 +214,11 @@ class OptionalPayment(Page):
         if player.provider != 'Other':
             player.provider_other = ''
 
+class FunFact1(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.bnpl_frequency != 'Never'
+
 class Preference(Page):
     form_model = 'player'
     form_fields = ['purchase_pref',
@@ -292,4 +297,4 @@ class Results(Page):
 class Test(Page):
     pass
 
-page_sequence = [Introduction, Demographics, Payment, OptionalPayment, Preference, Habit, Test]
+page_sequence = [Introduction, Demographics, Payment, OptionalPayment, FunFact1, Preference, Habit, Test]
