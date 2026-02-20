@@ -1,0 +1,87 @@
+{{ block title }}
+    <div class="section-title">Section 5: For Your Information</div>
+{{ endblock }}
+
+{{ block content }}
+
+<div class="section-subtitle">📊 Here’s what we found about you and other participants:</div>
+
+    <p class="info-text">
+        ✅ Among participants aged <b>{{ player.age_group }}</b>, you are in <b>{{ percentage }}%</b> reported
+        {{if player.bnpl_frequency == 'Never'}} <b>not</b> {{else}} {{endif}}
+        using <b>Buy Now, Pay Later (BNPL)</b> services.
+    </p>
+
+    <p class="info-text">
+        {{if num_factors == 1}}
+            💳 The most influential factor when choosing a payment method was
+        {{else}}
+            💳 The most influential factors when choosing a payment method were
+        {{endif}}
+        <b>{{ first_factors }}</b>.
+    </p>
+
+    <p class="info-text">
+        🏆 <b>{{ most_providers }}</b>
+        {{if num_providers == 1}}
+            was the most popular BNPL provider in this survey.
+        {{else}}
+            were the most popular BNPL providers in this survey.
+        {{endif}}
+    </p>
+
+<div class="info-divider"></div>
+
+<div class="section-subtitle">⏳ Payment Preferences Over Time</div>
+
+    <p class="info-text">
+        For a delay of <b>4–6 weeks</b>, participants were willing to pay on average
+        <b>€{{ turn_amount_q11_ave }}</b>.
+    </p>
+
+    <p class="info-text">
+        For a delay of <b>3–6 months</b>, the average acceptable payment increased to
+        <b>€{{ turn_amount_q12_ave }}</b>.
+    </p>
+
+<div class="info-divider"></div>
+
+<div class="section-subtitle">🧠 Your Preference Score</div>
+
+    <p class="info-text">
+        💡 You scored <b>{{ q14_ave }}</b> in <b>Unplanned Shopping</b> question that suggests:
+        <p>{{ q14_text }}</p>
+    </p>
+
+<style>
+    /* Main page title */
+    .section-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 18px;
+    }
+
+    /* Section subtitles */
+    .section-subtitle {
+        font-size: 20px;
+        font-weight: 600;
+        margin-top: 28px;
+        margin-bottom: 12px;
+    }
+
+    /* Body text */
+    .info-text {
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+
+    /* Divider */
+    .info-divider {
+        margin: 24px 0;
+        border-top: 1px solid #e0e0e0;
+    }
+</style>
+
+{{ endblock }}
+
