@@ -1,7 +1,10 @@
 {% load otree static %}
 
 {{ block title }}
-<b>Did you know?</b>
+<div class="center-message">
+    🎉 Hooray! You have completed our survey.<br>
+    Thank you for your time and effort!
+</div>
 {{ endblock }}
 
 {{ block content }}
@@ -10,20 +13,23 @@
 
 <div class="ff-card">
 
-    <p class="ff-text">
-        One-tap payments remove “speed bumps” — and speed bumps are often where the brain says:
-        <b>“wait… do I need this?”</b> 😅
-    </p>
-
+<!--    <p class="ff-text">-->
+<!--        One-tap payments remove “speed bumps” — and speed bumps are often where the brain says:-->
+<!--        <b>“wait… do I need this?”</b> 😅-->
+<!--    </p>-->
     <div class="ff-meme">
-        <img class="ff-img" src="{% static 'img/funfact_speedbump_meme.jpg' %}" alt="One-tap payments meme">
-        <div class="ff-caption">One tap. Zero hesitation.</div>
+        <img class="ff-img" src="{% static 'img/complete_survey.jpeg' %}" alt="Complete Survey">
+<!--        <div class="ff-caption">One tap. Zero hesitation.</div>-->
     </div>
 </div>
 
-{{ next_button }}
-
 <style>
+    .center-message {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 40px;
+        font-weight: 600;
+    }
     .ff-card{
         max-width: 860px;
         margin: 0 auto;

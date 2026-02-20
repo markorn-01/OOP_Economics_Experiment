@@ -415,6 +415,9 @@ class Insights(Page):
 
             # If after turning point it is still a valid answer, then collect it.
             if idx_11 != -1:
+                # If all options in right column are selected, then set idx to the first one
+                if (question_11_list[idx_11] == question_11_list[0]) and (question_11_list[0] == 2):
+                    idx_11 = 0
                 rows11 = Preference.rows11
                 _, left_amt, right_amt = rows11[idx_11]
 
@@ -453,6 +456,9 @@ class Insights(Page):
 
             # If after turning point it is still a valid answer, then collect it.
             if idx_12 != -1:
+                # If all options in right column are selected, then set idx to the first one
+                if (question_12_list[idx_12] == question_12_list[0]) and (question_12_list[0] == 2):
+                    idx_12 = 0
                 rows12 = Preference.rows12
                 _, left_amt, right_amt = rows12[idx_12]
 
@@ -489,10 +495,10 @@ class Insights(Page):
         dict["q14_text"] = q14_text
         return dict
 
-class Results(Page):
+class ThankYou(Page):
     pass
 
 class Test(Page):
     pass
   
-page_sequence = [Introduction, Demographics, Payment, OptionalPayment, FunFact1, Preference, FunFact2, Habit, Insights, Test]
+page_sequence = [Introduction, Demographics, Payment, OptionalPayment, FunFact1, Preference, FunFact2, Habit, Insights, ThankYou]
