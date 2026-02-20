@@ -400,15 +400,15 @@ class Insights(Page):
         # Find the turning point if it is valid
         for q in range(1, len(question_11_list)):
             if question_11_list[q] != question_11_list[q-1]:
-                if question_11_list[q-1] == 1:
-                    idx_11 = q
+                if question_11_list[q-1] == 2:
+                    idx_11 = q-1
                 else:
                     idx_11 = -1
                 break
 
         # Check if the question was answered rationally
         if idx_11 != -1:
-            for q in range(idx_11, len(question_11_list)-1):
+            for q in range(idx_11+1, len(question_11_list)-1):
                 if question_11_list[q] != question_11_list[q+1]:
                     idx_11 = -1
                     break
@@ -416,8 +416,9 @@ class Insights(Page):
             # If after turning point it is still a valid answer, then collect it.
             if idx_11 != -1:
                 # If all options in right column are selected, then set idx to the first one
-                if (question_11_list[idx_11] == question_11_list[0]) and (question_11_list[0] == 2):
+                if (question_11_list[-1] == question_11_list[0]) and (question_11_list[0] == 2):
                     idx_11 = 0
+
                 rows11 = Preference.rows11
                 _, left_amt, right_amt = rows11[idx_11]
 
@@ -441,15 +442,15 @@ class Insights(Page):
         # Find the turning point if it is valid
         for q in range(1, len(question_12_list)):
             if question_12_list[q] != question_12_list[q - 1]:
-                if question_12_list[q - 1] == 1:
-                    idx_12 = q
+                if question_12_list[q - 1] == 2:
+                    idx_12 = q-1
                 else:
                     idx_12 = -1
                 break
 
         # Check if the question was answered rationally
         if idx_12 != -1:
-            for q in range(idx_12, len(question_12_list) - 1):
+            for q in range(idx_12+1, len(question_12_list) - 1):
                 if question_12_list[q] != question_12_list[q + 1]:
                     idx_12 = -1
                     break
@@ -457,7 +458,7 @@ class Insights(Page):
             # If after turning point it is still a valid answer, then collect it.
             if idx_12 != -1:
                 # If all options in right column are selected, then set idx to the first one
-                if (question_12_list[idx_12] == question_12_list[0]) and (question_12_list[0] == 2):
+                if (question_12_list[-1] == question_12_list[0]) and (question_12_list[0] == 2):
                     idx_12 = 0
                 rows12 = Preference.rows12
                 _, left_amt, right_amt = rows12[idx_12]
