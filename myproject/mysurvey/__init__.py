@@ -328,15 +328,15 @@ class Insights(Page):
         dict["first_factor"] = first_factor
 
         # FACT 2.2: Show the most popular provider in q8.1
+        # Create base for providers
+        provider_base = {
+            "PayPal Pay in 4": 12,
+            "Affirm": 4,
+            "Klarna": 8,
+            "After pay": 3,
+            "Apple Pay Later": 6
+        }
         if frequency == 'Yes':
-            # Create base for providers
-            provider_base = {
-                "PayPal Pay in 4": 12,
-                "Affirm": 4,
-                "Klarna": 8,
-                "After pay": 3,
-                "Apple Pay Later": 6
-            }
 
             # Get the chosen provider of player
             player_most_provider = player.provider
@@ -345,11 +345,11 @@ class Insights(Page):
             if player_most_provider not in ["Other", "None"]:
                 provider_base[player_most_provider] += 1
 
-            # Get the most chosen provider
-            most_provider = max(provider_base, key=provider_base.get)
+        # Get the most chosen provider
+        most_provider = max(provider_base, key=provider_base.get)
 
-            # Add the most popular provider to dict
-            dict["most_provider"] = most_provider
+        # Add the most popular provider to dict
+        dict["most_provider"] = most_provider
 
         # FACT 3:
         # Calculate the turning numbers for q11 and q12
