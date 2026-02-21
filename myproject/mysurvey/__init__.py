@@ -387,86 +387,25 @@ class Insights(Page):
 
         # FACT 3:
         # Calculate the turning numbers for q11 and q12
+        # Q11
         # Create a list of questions
         question_11_list = [player.q111, player.q112, player.q113, player.q114, player.q115]
         idx_11 = len(question_11_list)-1
 
         # Create a base turning amount
         past_turn_amount = [1000, 1004, 1000, 1009, 1022]
-        len_turn_amount = len(past_turn_amount)
-        sum_turn_amount = sum(past_turn_amount)
-
-
-        # Find the turning point if it is valid
-        for q in range(1, len(question_11_list)):
-            if question_11_list[q] != question_11_list[q-1]:
-                if question_11_list[q-1] == 2:
-                    idx_11 = q-1
-                else:
-                    idx_11 = -1
-                break
-
-        # Check if the question was answered rationally
-        if idx_11 != -1:
-            for q in range(idx_11+1, len(question_11_list)-1):
-                if question_11_list[q] != question_11_list[q+1]:
-                    idx_11 = -1
-                    break
-
-            # If after turning point it is still a valid answer, then collect it.
-            if idx_11 != -1:
-                # If all options in right column are selected, then set idx to the first one
-                if (question_11_list[-1] == question_11_list[0]) and (question_11_list[0] == 2):
-                    idx_11 = 0
-
-                rows11 = Preference.rows11
-                _, left_amt, right_amt = rows11[idx_11]
-
-                choice_val = question_11_list[idx_11]  # 1 or 2
-                chosen_amt = left_amt if choice_val == 1 else right_amt
-                sum_turn_amount += chosen_amt
-                len_turn_amount += 1
-
+        len_turn_amount, sum_turn_amount = Insights.get_len_sum(idx_11, past_turn_amount, question_11_list, Preference.rows11)
         dict["turn_amount_q11_ave"] = round(sum_turn_amount / len_turn_amount, 2)
 
 
         # Q12
+        # Create a list of questions
         question_12_list = [player.q121, player.q122, player.q123, player.q124, player.q125]
         idx_12 = len(question_12_list) - 1
 
         # Create a base turning amount
         past_turn_amount_12 = [1007, 1021, 1000, 1053, 1014]
-        len_turn_amount_12 = len(past_turn_amount_12)
-        sum_turn_amount_12 = sum(past_turn_amount_12)
-
-        # Find the turning point if it is valid
-        for q in range(1, len(question_12_list)):
-            if question_12_list[q] != question_12_list[q - 1]:
-                if question_12_list[q - 1] == 2:
-                    idx_12 = q-1
-                else:
-                    idx_12 = -1
-                break
-
-        # Check if the question was answered rationally
-        if idx_12 != -1:
-            for q in range(idx_12+1, len(question_12_list) - 1):
-                if question_12_list[q] != question_12_list[q + 1]:
-                    idx_12 = -1
-                    break
-
-            # If after turning point it is still a valid answer, then collect it.
-            if idx_12 != -1:
-                # If all options in right column are selected, then set idx to the first one
-                if (question_12_list[-1] == question_12_list[0]) and (question_12_list[0] == 2):
-                    idx_12 = 0
-                rows12 = Preference.rows12
-                _, left_amt, right_amt = rows12[idx_12]
-
-                choice_val = question_12_list[idx_12]  # 1 or 2
-                chosen_amt = left_amt if choice_val == 1 else right_amt
-                sum_turn_amount_12 += chosen_amt
-                len_turn_amount_12 += 1
+        len_turn_amount_12, sum_turn_amount_12 = Insights.get_len_sum(idx_12, past_turn_amount_12, question_12_list, Preference.rows12)
         dict["turn_amount_q12_ave"] = round(sum_turn_amount_12 / len_turn_amount_12, 2)
 
         # FACT 4: Indications from unplanned shopping score
@@ -495,6 +434,42 @@ class Insights(Page):
 
         dict["q14_text"] = q14_text
         return dict
+
+    @staticmethod
+    def get_len_sum(idx, past_turn_amount, question_list, rows):
+        len_turn_amount = len(past_turn_amount)
+        sum_turn_amount = sum(past_turn_amount)
+
+        # Find the turning point if it is valid
+        for q in range(1, len(question_list)):
+            if question_list[q] != question_list[q - 1]:
+                if question_list[q - 1] == 2:
+                    idx = q - 1
+                else:
+                    idx = -1
+                break
+
+        # Check if the question was answered rationally
+        if idx != -1:
+            for q in range(idx + 1, len(question_list) - 1):
+                if question_list[q] != question_list[q + 1]:
+                    idx = -1
+                    break
+
+            # If after turning point it is still a valid answer, then collect it.
+            if idx != -1:
+                # If all options in right column are selected, then set idx to the first one
+                if (question_list[-1] == question_list[0]) and (question_list[0] == 2):
+                    idx = 0
+
+                _, left_amt, right_amt = rows[idx]
+
+                choice_val = question_list[idx]  # 1 or 2
+                chosen_amt = left_amt if choice_val == 1 else right_amt
+                sum_turn_amount += chosen_amt
+                len_turn_amount += 1
+        return len_turn_amount, sum_turn_amount
+
 
 class ThankYou(Page):
     pass
